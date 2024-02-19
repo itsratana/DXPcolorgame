@@ -149,11 +149,6 @@ public class PlayerII : NetworkBehaviour
             horizontalInput = Input.GetAxis("Horizontal");
             // acceleration = Input.acceleration;
             CmdInputChanged(horizontalInput);
-            //if (accumulatedRotation != syncedRotation)
-            //{
-            //    accumulatedRotation = syncedRotation;
-            //    CmdAccelerationChanged(accumulatedRotation);
-            //}
         }
         if(isServer)
         {
