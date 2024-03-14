@@ -1,16 +1,41 @@
+using System.Net;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 public class NetworkInfo : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public string GetLocalIPAddress()
     {
-        
-    }
+        string localIPAddress = "localhost";
+        IPAddress[] localIPs = Dns.GetHostAddresses(Dns.GetHostName());
 
-    // Update is called once per frame
-    void Update()
+        foreach (IPAddress ip in localIPs)
+        {
+            if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+            {
+                localIPAddress = ip.ToString();
+                break;
+            }
+        }
+        return localIPAddress;
+    }
+    private string ExtractIpAddress(string url)
     {
-        
+        string pattern = @"\b(?:\d{1,3}\.){3}\d{1,3}\b";
+
+        MatchCollection matches = Regex.Matches(url, pattern);
+
+        if (matches.Count > 0)
+        {
+            return matches[0].Value;
+        }
+        else
+        {
+            return "No IP address found";
+        }
+    }
+    public string GetIPAddressFromUrl(string url)
+    {
+        return ExtractIpAddress(url);
     }
 }
