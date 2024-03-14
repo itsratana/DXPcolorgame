@@ -1,13 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioLoudnessDetection : MonoBehaviour
 {
     public int sampleWindow = 64;
     private AudioClip microphoneClip;
-    void Start()    
+
+    /*void Start()    
     {
         MicrophoneToAudio();
     }
@@ -21,7 +20,7 @@ public class AudioLoudnessDetection : MonoBehaviour
     public float GetLoudnessFromMicrophone()
     {
         return GetLoudnessFromAudio(Microphone.GetPosition(Microphone.devices[0]), microphoneClip);
-    }
+    }*/
 
     public float GetLoudnessFromAudio(int clipPosition,AudioClip clip)
     {
@@ -33,7 +32,6 @@ public class AudioLoudnessDetection : MonoBehaviour
         }
         float[] waveData = new float[sampleWindow];
         clip.GetData(waveData, startPosition);
-
 
         float totalLoudness = 0;
 

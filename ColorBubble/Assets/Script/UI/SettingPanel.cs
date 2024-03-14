@@ -31,9 +31,14 @@ public class SettingPanel : MonoBehaviour
     {
         Instance = this;
     }
-    void Start()
+
+    private void OnEnable()
     {
         player = FindObjectOfType<PlayerII>();
+    }
+    void Start()
+    {
+        
         //rotation = FindObjectOfType<Rotation>();
         dataSaveManager = FindObjectOfType<DataSaveManager>();
 
@@ -49,17 +54,17 @@ public class SettingPanel : MonoBehaviour
 
     public void OnThresholdValueChanged(float newValue)
     {
-        player.UpdateThreshold(newValue);
+        player.CmdThreshold(newValue);
         settingChanged = true;
     }
     public void OnRotationSenChanged(float newValue)
     {
-        player.UpdateRotationSen(newValue);
+        player.CmdRotationSen(newValue);
         settingChanged = true;
     }
     public void OnLoudnessSenChanged(float newValue)
     {
-        player.UpdateLoudnessSen(newValue);
+        player.CmdLoudnessSen(newValue);
         settingChanged = true;
     }
     public void ResetToDefault()

@@ -57,10 +57,10 @@ public class Player : MonoBehaviour
         Vector3 acceleration = Input.acceleration;
         Vector3 playerMovement = new (acceleration.x, 0, vertical);
 
-        float loudness = detector.GetLoudnessFromMicrophone() * loudnessSensibility;
+        /*float loudness = detector.GetLoudnessFromMicrophone() * loudnessSensibility;*/
        //Debug.Log("Loudness: " + loudness);
 
-        if (loudness > threshold) 
+        /*if (loudness > threshold) 
         {
             velocity += accelerationSpeed * loudness * Time.deltaTime;
         }
@@ -68,7 +68,7 @@ public class Player : MonoBehaviour
         {
             velocity -= deacceleration * Time.deltaTime;
         }
-        velocity = Mathf.Clamp(velocity,0,maxForwardSpeed);
+        velocity = Mathf.Clamp(velocity,0,maxForwardSpeed);*/
 
         //Gravity
         if (characterController.isGrounded)

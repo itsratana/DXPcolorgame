@@ -24,11 +24,12 @@ public class PlayerII : NetworkBehaviour
     private float accumulatedRotation = 0f;
     public float rotationSpeed = 100f;
     private float rotationAmount;
-    Vector3 acceleration;
     float horizontalInput;
+    Vector3 acceleration;
 
     //Audio Input
-    public AudioLoudnessDetection detector;
+   // public AudioLoudnessDetection detector;
+    public AudioLoudnessDectionWebGL detectorWebGL;
     public float loudnessSensibility;
     public float threshold;
     public float thresholdMove;
@@ -84,7 +85,7 @@ public class PlayerII : NetworkBehaviour
         LoadSettings();
 
         countdownText.gameObject.SetActive(false);
-            
+        Input.gyro.enabled = true;    
         
         //countDownCoroutine = StartCoroutine(CheckVelocityAfk());
     }
@@ -93,13 +94,14 @@ public class PlayerII : NetworkBehaviour
     {
         PlayerMovement();
         Rotation();
+        Timer.instance.TimerCountdown();
     }
     private void PlayerMovement()
     {
         playerMovement = transform.forward;
         if (isLocalPlayer)
         {
-            loudness = detector.GetLoudnessFromMicrophone() * loudnessSensibility;
+            loudness = detectorWebGL.MicrophoneLoudness() * loudnessSensibility;
 
             if(loudness != syncedloudness)
             {
@@ -113,7 +115,7 @@ public class PlayerII : NetworkBehaviour
             {
                 if (rb.velocity.magnitude < thresholdMove)
                 {
-                    rb.AddForce(playerMovement * loudness * veloForce, ForceMode.Impulse);
+                    rb.AddForce(playerMovement * loudness, ForceMode.Impulse);
                     //StopCoroutine(countDownCoroutine);
                     isCoroutineStart = false;
                     countdownText.gameObject.SetActive(false);
@@ -147,16 +149,17 @@ public class PlayerII : NetworkBehaviour
         if (isLocalPlayer)
         {
             horizontalInput = Input.GetAxis("Horizontal");
-            // acceleration = Input.acceleration;
+            acceleration = Input.acceleration;
             CmdInputChanged(horizontalInput);
+            CmdRotationChanged(acceleration.x);
         }
         if(isServer)
         {
             rotationAmount = horizontalInput * rotationSpeed * Time.deltaTime;
             accumulatedRotation += rotationAmount;
 
-            /*float accelerationRotation = acceleration.x * rotationSpeed * Time.deltaTime;
-            accumulatedRotation += accelerationRotation;*/
+            float accelerationRotation = acceleration.x * rotationSpeed * Time.deltaTime;
+            accumulatedRotation += accelerationRotation;
         }
         
     }
@@ -171,7 +174,13 @@ public class PlayerII : NetworkBehaviour
     {
         horizontalInput = input;
     }
-    public void UpdateThreshold(float newThreshold)
+    [Command(channel = Channels.Unreliable)]
+    void CmdRotationChanged(float input)
+    {
+        acceleration.x = input;
+    }
+
+    /*public void UpdateThreshold(float newThreshold)
     {
         threshold = newThreshold;
     }
@@ -180,6 +189,22 @@ public class PlayerII : NetworkBehaviour
         loudnessSensibility = newLoudnessSen;
     }
     public void UpdateRotationSen(float newRotationSpeed)
+    {
+        rotationSpeed = newRotationSpeed;
+    }*/
+
+    [Command]
+    public void CmdThreshold(float newThreshold)
+    {
+        threshold = newThreshold;
+    }
+    [Command]
+    public void CmdLoudnessSen(float newLoudnessSen)
+    {
+        loudnessSensibility = newLoudnessSen;
+    }
+    [Command]
+    public void CmdRotationSen(float newRotationSpeed)
     {
         rotationSpeed = newRotationSpeed;
     }

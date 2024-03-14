@@ -24,7 +24,7 @@ public class Timer : MonoBehaviour
     }
     void Update()
     {
-        TimerCountdown();
+        
     }
     public void TimerCountdown()
     {
