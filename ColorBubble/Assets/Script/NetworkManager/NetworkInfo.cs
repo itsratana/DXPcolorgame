@@ -38,4 +38,49 @@ public class NetworkInfo : MonoBehaviour
     {
         return ExtractIpAddress(url);
     }
+    public string ExtractToken()
+    {
+        string pattern = @"token=([^&]+)";
+        Regex regex = new Regex(pattern);
+
+        Match match = regex.Match(Application.absoluteURL);
+
+        if (match.Success)
+        {
+            return match.Groups[1].Value;
+        }
+
+        return "";
+
+        //string pattern = @"token=([^&]+)";
+
+        //MatchCollection matches = Regex.Matches(url, pattern);
+
+        //if (matches.Count > 0)
+        //{
+        //    return matches[0].Groups[1].Value;
+        //}
+        //else
+        //{
+        //    return "No IP address found";
+        //}
+    }
+    public string ExtractGameId()
+    {
+        string pattern = @"/games/([a-zA-Z0-9]+)";
+
+        Regex regex = new Regex(pattern);
+
+        Match match = regex.Match(Application.absoluteURL);
+
+        if (match.Success && match.Groups.Count > 1)
+        {
+            return match.Groups[1].Value;
+        }
+        else
+        {
+            return "Game ID not found in the URL";
+        }
+    }
 }
+

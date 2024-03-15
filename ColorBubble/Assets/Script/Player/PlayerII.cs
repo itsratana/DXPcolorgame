@@ -148,9 +148,9 @@ public class PlayerII : NetworkBehaviour
 
         if (isLocalPlayer)
         {
-            horizontalInput = Input.GetAxis("Horizontal");
+           // horizontalInput = Input.GetAxis("Horizontal");
             acceleration = Input.acceleration;
-            CmdInputChanged(horizontalInput);
+           // CmdInputChanged(horizontalInput);
             CmdRotationChanged(acceleration.x);
         }
         if(isServer)
@@ -169,11 +169,11 @@ public class PlayerII : NetworkBehaviour
     {
         this.loudness = loudness;
     }
-    [Command(channel = Channels.Unreliable)]
+    /*[Command(channel = Channels.Unreliable)]
     void CmdInputChanged(float input)
     {
         horizontalInput = input;
-    }
+    }*/
     [Command(channel = Channels.Unreliable)]
     void CmdRotationChanged(float input)
     {

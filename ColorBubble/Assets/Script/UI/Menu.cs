@@ -53,6 +53,10 @@ public class Menu : MonoBehaviour
         Time.timeScale = 0f;
         isMenuActive = false;
     }
+    void CmdPause()
+    {
+
+    }
 
     void Resume()
     {

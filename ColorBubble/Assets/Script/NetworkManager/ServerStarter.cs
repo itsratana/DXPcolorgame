@@ -32,7 +32,7 @@ public class ServerStarter : MonoBehaviour
         else
         {
             // input form then
-            StartCoroutine(_myNetworkHUD.GetValidateUserToken(networkInfo.ExtractToken(), Application.absoluteURL));
+            //StartCoroutine(_myNetworkHUD.GetValidateUserToken(networkInfo.ExtractToken(), Application.absoluteURL));
         }
     }
 }
