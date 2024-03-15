@@ -10,6 +10,7 @@ public class PlayerII : NetworkBehaviour
 {
     public DataSaveManager dataSaveManager;
     public RefManager refManager;
+    public Menu menu;
 
     //Player
     //private bool isDead = false;
@@ -315,6 +316,8 @@ public class PlayerII : NetworkBehaviour
             dataSaveManager = refManager.dataSaveManager;
             countdownText = refManager.countdownTime;
             refManager.virtualCamera.Follow = transform;
+            refManager.AssignPlayertoMenu(this);
+            menu = refManager.refMenu;
 
             if (isLocalPlayer)
             {
@@ -331,6 +334,25 @@ public class PlayerII : NetworkBehaviour
             dataSaveManager = refManager.dataSaveManager;
             countdownText = refManager.countdownTime;
             refManager.virtualCamera.Follow = transform;
+            menu = refManager.refMenu;
         }
+    }
+    [Command]
+    public void CmdPause()
+    {
+        if (isLocalPlayer)
+        {
+            menu.Pause();
+        }
+    }
+    [Command]
+    public void CmdResume()
+    {
+
+    }
+    [Command]
+    public void CmdStart()
+    {
+
     }
 }

@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Mirror;
 
 public class Menu : MonoBehaviour
 {
+    private PlayerII player;
+
     public GameObject menuPanel;
     public GameObject settingPanel; 
     public Button pauseButton;
@@ -46,19 +49,20 @@ public class Menu : MonoBehaviour
         }
     }
 
-    void Pause()
+    public void CallPauseInPlayer()
+    {
+        player.CmdPause();
+    }
+
+    public void Pause()
     {
         pauseButton.gameObject.SetActive(false);
         menuPanel.SetActive(true);
         Time.timeScale = 0f;
         isMenuActive = false;
     }
-    void CmdPause()
-    {
 
-    }
-
-    void Resume()
+    public void Resume()
     {
         pauseButton.gameObject.SetActive(true);
         menuPanel.SetActive(false);
@@ -73,7 +77,7 @@ public class Menu : MonoBehaviour
         Time.timeScale = settingPanel.activeSelf ? 0f : 1f;
     }
 
-    void Restart()
+    public void Restart()
     {
         Scene currentScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(currentScene.name);
@@ -82,5 +86,10 @@ public class Menu : MonoBehaviour
     public void MoveToScene(int SceneID)
     {
         SceneManager.LoadScene(SceneID);
+    }
+
+    public void AssignPlayertoMenu(PlayerII player)
+    {
+        this.player = player;
     }
 }
