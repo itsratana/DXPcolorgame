@@ -1,8 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using TMPro;
 using Mirror;
 
@@ -19,6 +17,7 @@ public class PlayerII : NetworkBehaviour
     Vector3 lastVelocity;
     [SerializeField] private float veloForce;
 
+    [Header("Rotation")]
     private Rotation lineRotation;
     private float accumulatedRotation = 0f;
     public float rotationSpeed = 100f;
@@ -29,15 +28,13 @@ public class PlayerII : NetworkBehaviour
     private Vector3 moveDirection;
     [SerializeField] TrajectoryLine trajectoryLine;
 
-    [SerializeField] float loudness;
-    [SerializeField] float syncedloudness;
     Vector3 playerMovement;
 
-    //Color
+    [Header("Color")]
     public PlayerColor currentColor = PlayerColor.red;
     public Color[] colorPlayer;
 
-    //Inactive Countdown
+    [Header("Countdown")]
     private float checkInterval = 0.1f;
     private float afkCheck = 11f;
     public TextMeshProUGUI countdownText;
@@ -114,17 +111,6 @@ public class PlayerII : NetworkBehaviour
         }
         
     }
-
-    [Command(channel = Channels.Unreliable)]
-    void CmdLoudnessChanged(float loudness)
-    {
-        this.loudness = loudness;
-    }
-    /*[Command(channel = Channels.Unreliable)]
-    void CmdInputChanged(float input)
-    {
-        horizontalInput = input;
-    }*/
     [Command(channel = Channels.Unreliable)]
     void CmdRotationChanged(float input)
     {

@@ -13,5 +13,143 @@ MonoBehaviour:
   m_Name: vFolders Data
   m_EditorClassIdentifier: 
   folderDatasByGuid:
-    keys: []
-    values: []
+    keys:
+    - 00000000000000001000000000000000
+    - efb6ccf503dd8af4cba4059b395540f0
+    - a858802a3b96a48308446b3a7d217e29
+    - 8a12bcf9c612c7c49a4394a97e5a1ad5
+    - 5cf8eb36be0834b3da408c694a41cb88
+    - bd07209623118fc46a32850135be3f32
+    - c15389bccf135fd45904ae28f0de4133
+    - a13ed76b66aee5d4283635b9db3a3ae3
+    - bc2ee6f786f5edd478892e730288961a
+    - 6ea315d0fd7389c41b19996891e99ae3
+    - 4a4012af938b83c4ba44cd63afcd9e50
+    - f54d1bd14bd3ca042bd867b519fee8cc
+    - 124f9d3f5d4974cff8838c207f42f5ba
+    - 33ac3ca1ab2934515b2304f20d755900
+    - de0d05608206a42af8845c2cfefff32b
+    - b28bd598f01704a77bdfb0d3be458d75
+    - 1d2db06578c7e7d49a1f433d971cf763
+    - c80912b84a1db3341b0f1c5b638450b9
+    - fb20aa840adadab4b9b6febeaa56d619
+    - 28423bf1813b53a43b2206550e9a6cf1
+    - a429dca25727c44489a5deed9afee49b
+    - 80a22321b7a0c654188759611e84adf8
+    - 488f51ff80e50914dae12429b0cab833
+    values:
+    - guid: 00000000000000001000000000000000
+      iColor: 0
+      autoIcon: 
+      customIcon: 
+      autoIconDirty: 0
+    - guid: efb6ccf503dd8af4cba4059b395540f0
+      iColor: 0
+      autoIcon: 
+      customIcon: 
+      autoIconDirty: 0
+    - guid: a858802a3b96a48308446b3a7d217e29
+      iColor: 0
+      autoIcon: 
+      customIcon: 
+      autoIconDirty: 0
+    - guid: 8a12bcf9c612c7c49a4394a97e5a1ad5
+      iColor: 0
+      autoIcon: Material Icon
+      customIcon: 
+      autoIconDirty: 0
+    - guid: 5cf8eb36be0834b3da408c694a41cb88
+      iColor: 0
+      autoIcon: 
+      customIcon: 
+      autoIconDirty: 0
+    - guid: bd07209623118fc46a32850135be3f32
+      iColor: 0
+      autoIcon: 
+      customIcon: 
+      autoIconDirty: 0
+    - guid: c15389bccf135fd45904ae28f0de4133
+      iColor: 0
+      autoIcon: 
+      customIcon: 
+      autoIconDirty: 0
+    - guid: a13ed76b66aee5d4283635b9db3a3ae3
+      iColor: 0
+      autoIcon: Prefab Icon
+      customIcon: 
+      autoIconDirty: 0
+    - guid: bc2ee6f786f5edd478892e730288961a
+      iColor: 0
+      autoIcon: ScriptableObject Icon
+      customIcon: 
+      autoIconDirty: 0
+    - guid: 6ea315d0fd7389c41b19996891e99ae3
+      iColor: 0
+      autoIcon: SceneAsset Icon
+      customIcon: 
+      autoIconDirty: 0
+    - guid: 4a4012af938b83c4ba44cd63afcd9e50
+      iColor: 0
+      autoIcon: cs Script Icon
+      customIcon: 
+      autoIconDirty: 0
+    - guid: f54d1bd14bd3ca042bd867b519fee8cc
+      iColor: 0
+      autoIcon: 
+      customIcon: 
+      autoIconDirty: 0
+    - guid: 124f9d3f5d4974cff8838c207f42f5ba
+      iColor: 0
+      autoIcon: 
+      customIcon: 
+      autoIconDirty: 0
+    - guid: 33ac3ca1ab2934515b2304f20d755900
+      iColor: 0
+      autoIcon: 
+      customIcon: 
+      autoIconDirty: 0
+    - guid: de0d05608206a42af8845c2cfefff32b
+      iColor: 0
+      autoIcon: 
+      customIcon: 
+      autoIconDirty: 0
+    - guid: b28bd598f01704a77bdfb0d3be458d75
+      iColor: 0
+      autoIcon: 
+      customIcon: 
+      autoIconDirty: 0
+    - guid: 1d2db06578c7e7d49a1f433d971cf763
+      iColor: 0
+      autoIcon: 
+      customIcon: 
+      autoIconDirty: 0
+    - guid: c80912b84a1db3341b0f1c5b638450b9
+      iColor: 0
+      autoIcon: Prefab Icon
+      customIcon: 
+      autoIconDirty: 1
+    - guid: fb20aa840adadab4b9b6febeaa56d619
+      iColor: 0
+      autoIcon: Prefab Icon
+      customIcon: 
+      autoIconDirty: 1
+    - guid: 28423bf1813b53a43b2206550e9a6cf1
+      iColor: 0
+      autoIcon: cs Script Icon
+      customIcon: 
+      autoIconDirty: 0
+    - guid: a429dca25727c44489a5deed9afee49b
+      iColor: 0
+      autoIcon: cs Script Icon
+      customIcon: 
+      autoIconDirty: 0
+    - guid: 80a22321b7a0c654188759611e84adf8
+      iColor: 0
+      autoIcon: cs Script Icon
+      customIcon: 
+      autoIconDirty: 1
+    - guid: 488f51ff80e50914dae12429b0cab833
+      iColor: 0
+      autoIcon: cs Script Icon
+      customIcon: 
+      autoIconDirty: 0
