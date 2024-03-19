@@ -3,7 +3,7 @@ using UnityEngine;
 public class ServerStarter : MonoBehaviour
 {
     [SerializeField] private MyNetworkHUD _myNetworkHUD = null;
-    [SerializeField] private Transform _titleGame = null;
+    //[SerializeField] private Transform _titleGame = null;
     [SerializeField] private Transform _qrCode = null;
     [SerializeField] private NetworkInfo networkInfo = null;
 
@@ -14,7 +14,7 @@ public class ServerStarter : MonoBehaviour
 
     public void StartServer()
     {
-        _titleGame.gameObject.SetActive(true);
+        //_titleGame.gameObject.SetActive(true);
         if (Application.platform == RuntimePlatform.WindowsEditor)
         {
             if (_qrCode != null)
@@ -25,9 +25,9 @@ public class ServerStarter : MonoBehaviour
         }
         else if (Application.platform == RuntimePlatform.WindowsPlayer)
         {
-            _qrCode.gameObject.SetActive(true);
-            //_myNetworkHUD.TestOnStatClient();
+            //_qrCode.gameObject.SetActive(true);            
             _myNetworkHUD.OnServerOnly();
+            //_myNetworkHUD.TestOnStatClient();
         }
         else
         {

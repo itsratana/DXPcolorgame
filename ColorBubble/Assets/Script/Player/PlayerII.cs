@@ -88,7 +88,7 @@ public class PlayerII : NetworkBehaviour
         countdownText.gameObject.SetActive(false);
         Input.gyro.enabled = true;    
         
-        //countDownCoroutine = StartCoroutine(CheckVelocityAfk());
+        countDownCoroutine = StartCoroutine(CheckVelocityAfk());
     }
 
     void Update()
@@ -117,7 +117,7 @@ public class PlayerII : NetworkBehaviour
                 if (rb.velocity.magnitude < thresholdMove)
                 {
                     rb.AddForce(playerMovement * loudness, ForceMode.Impulse);
-                    //StopCoroutine(countDownCoroutine);
+                    StopCoroutine(countDownCoroutine);
                     isCoroutineStart = false;
                     countdownText.gameObject.SetActive(false);
                 }
@@ -127,7 +127,7 @@ public class PlayerII : NetworkBehaviour
                 trajectoryLine.ShowLine(true);
                 if (!isCoroutineStart)
                 {
-                    //countDownCoroutine = StartCoroutine(CheckVelocityAfk());
+                    countDownCoroutine = StartCoroutine(CheckVelocityAfk());
                 }
             }
             else

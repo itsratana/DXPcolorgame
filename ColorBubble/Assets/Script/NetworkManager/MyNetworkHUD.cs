@@ -35,6 +35,7 @@ public class MyNetworkHUD : MonoBehaviour
     public void OnServerOnly()
     {
         manager.StartServer();
+        if (startGameButton)
         startGameButton.gameObject.SetActive(true);
     }
 
@@ -63,7 +64,9 @@ public class MyNetworkHUD : MonoBehaviour
 
     public void UpdateInputField()
     {
+        Debug.Log(inputField.text +"sdsd");
         manager.networkAddress = inputField.text;
+        
     }
 
     /*public void OnStartClientWhenNotConnectToServer()
@@ -123,8 +126,10 @@ public class MyNetworkHUD : MonoBehaviour
     public void TestOnStatClient()
     {
         //manager.networkAddress = networkInfo.GetLocalIPAddressFromUrl(Application.absoluteURL);
-        //manager.networkAddress = "192.168.11.106";
-        manager.networkAddress = "localhost";
+        //manager.networkAddress = "192.168.88.61";
+        //manager.networkAddress = "localhost";
+        UpdateInputField();
         manager.StartClient();
+
     }
 }
