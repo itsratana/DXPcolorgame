@@ -1,4 +1,4 @@
-using UnityEngine;
+/*using UnityEngine;
 using UnityEngine.UI;
 
 public class SettingPanel : MonoBehaviour
@@ -74,9 +74,9 @@ public class SettingPanel : MonoBehaviour
     }
     public void ConfirmReset()
     {
-        /*currentThreshold = defaultThreshold;
+        *//*currentThreshold = defaultThreshold;
         currentLoudnessSen = defaultLoudnessSen;
-        currentRotationSen = defaultRotationSen;*/
+        currentRotationSen = defaultRotationSen;*//*
 
         thresholdSlider.value = defaultThreshold;
         loudnessSenSlider.value = defaultLoudnessSen;
@@ -178,3 +178,4 @@ public class SettingsData
     public float LoudnessSen;
     public float RotationSen;
 }
+*/

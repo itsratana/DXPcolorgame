@@ -8,9 +8,7 @@ using Mirror;
 
 public class PlayerII : NetworkBehaviour
 {
-    public DataSaveManager dataSaveManager;
     public RefManager refManager;
-    public Menu menu;
 
     //Player
     //private bool isDead = false;
@@ -27,13 +25,6 @@ public class PlayerII : NetworkBehaviour
     private float rotationAmount;
     float horizontalInput;
     Vector3 acceleration;
-
-    //Audio Input
-   // public AudioLoudnessDetection detector;
-    public AudioLoudnessDectionWebGL detectorWebGL;
-    public float loudnessSensibility;
-    public float threshold;
-    public float thresholdMove;
 
     private Vector3 moveDirection;
     [SerializeField] TrajectoryLine trajectoryLine;
@@ -83,7 +74,7 @@ public class PlayerII : NetworkBehaviour
     {
         rb = GetComponent<Rigidbody>();
         lineRotation = GetComponent<Rotation>();
-        LoadSettings();
+        //LoadSettings();
 
         countdownText.gameObject.SetActive(false);
         Input.gyro.enabled = true;    
@@ -99,48 +90,7 @@ public class PlayerII : NetworkBehaviour
     }
     private void PlayerMovement()
     {
-        playerMovement = transform.forward;
-        if (isLocalPlayer)
-        {
-            loudness = detectorWebGL.MicrophoneLoudness() * loudnessSensibility;
 
-            if(loudness != syncedloudness)
-            {
-                syncedloudness = loudness;
-                CmdLoudnessChanged(syncedloudness);
-            }
-        }
-        if (isServer)
-        {
-            if (loudness > threshold)
-            {
-                if (rb.velocity.magnitude < thresholdMove)
-                {
-                    rb.AddForce(playerMovement * loudness, ForceMode.Impulse);
-                    StopCoroutine(countDownCoroutine);
-                    isCoroutineStart = false;
-                    countdownText.gameObject.SetActive(false);
-                }
-            }
-            if (rb.velocity.magnitude < thresholdMove)
-            {
-                trajectoryLine.ShowLine(true);
-                if (!isCoroutineStart)
-                {
-                    countDownCoroutine = StartCoroutine(CheckVelocityAfk());
-                }
-            }
-            else
-            {
-                trajectoryLine.ShowLine(false);
-            }
-
-            if (transform.position.y < -20f)
-            {
-                Scene currentScene = SceneManager.GetActiveScene();
-                SceneManager.LoadScene(currentScene.name);
-            }
-        }   
     }
     private void Rotation()
     {
@@ -195,41 +145,10 @@ public class PlayerII : NetworkBehaviour
     }*/
 
     [Command]
-    public void CmdThreshold(float newThreshold)
-    {
-        threshold = newThreshold;
-    }
-    [Command]
-    public void CmdLoudnessSen(float newLoudnessSen)
-    {
-        loudnessSensibility = newLoudnessSen;
-    }
-    [Command]
     public void CmdRotationSen(float newRotationSpeed)
     {
         rotationSpeed = newRotationSpeed;
     }
-    public SettingsData GetSettingsData()
-    {
-        return new SettingsData
-        {
-            Threshold = threshold,
-            LoudnessSen = loudnessSensibility,
-            RotationSen = rotationSpeed,
-        };
-    }
-    public void ApplySettings(SettingsData settingsData)
-    {
-        threshold = settingsData.Threshold;
-        loudnessSensibility = settingsData.LoudnessSen;
-        rotationSpeed = settingsData.RotationSen;
-    }
-    private void LoadSettings()
-    {
-        SettingsData settingsData = dataSaveManager.LoadData();
-        ApplySettings(settingsData);
-    }
-
     private void LateUpdate()
     {
         lastVelocity = rb.velocity;
@@ -246,16 +165,6 @@ public class PlayerII : NetworkBehaviour
             Bounce++;
         }
     }
-
-    /*public void SetIsDead(bool value)
-    {
-        isDead = true;
-    }
-
-    public bool GetIsDead()
-    {
-        return isDead;
-    }*/
 
     IEnumerator CheckVelocityAfk()
     {
@@ -295,15 +204,6 @@ public class PlayerII : NetworkBehaviour
     }
     void UpdateCountdownText(float timeRemaining)
     {
-        //countdownText.gameObject.SetActive(!countdownText.gameObject.activeSelf);
-        //if (rb.velocity.magnitude < 0.01f)
-        //{
-        //    countdownText.gameObject.SetActive(true);
-        //}
-        //else
-        //{
-        //    countdownText.gameObject.SetActive(false);
-        //}
         countdownText.text = Mathf.CeilToInt(timeRemaining).ToString("0");
     }
 
@@ -313,11 +213,8 @@ public class PlayerII : NetworkBehaviour
         refManager = FindObjectOfType<RefManager>();
         if (refManager != null)
         {
-            dataSaveManager = refManager.dataSaveManager;
             countdownText = refManager.countdownTime;
             refManager.virtualCamera.Follow = transform;
-            refManager.AssignPlayertoMenu(this);
-            menu = refManager.refMenu;
 
             if (isLocalPlayer)
             {
@@ -331,28 +228,47 @@ public class PlayerII : NetworkBehaviour
         refManager = FindObjectOfType<RefManager>();
         if (refManager != null)
         {
-            dataSaveManager = refManager.dataSaveManager;
             countdownText = refManager.countdownTime;
             refManager.virtualCamera.Follow = transform;
-            menu = refManager.refMenu;
         }
     }
-    [Command]
-    public void CmdPause()
+    /*private void PlayerMovement()
     {
+        playerMovement = transform.forward;
         if (isLocalPlayer)
         {
-            menu.Pause();
+           
         }
-    }
-    [Command]
-    public void CmdResume()
-    {
+        if (isServer)
+        {
+            if (loudness > threshold)
+            {
+                if (rb.velocity.magnitude < thresholdMove)
+                {
+                    rb.AddForce(playerMovement * loudness, ForceMode.Impulse);
+                    StopCoroutine(countDownCoroutine);
+                    isCoroutineStart = false;
+                    countdownText.gameObject.SetActive(false);
+                }
+            }
+            if (rb.velocity.magnitude < thresholdMove)
+            {
+                trajectoryLine.ShowLine(true);
+                if (!isCoroutineStart)
+                {
+                    countDownCoroutine = StartCoroutine(CheckVelocityAfk());
+                }
+            }
+            else
+            {
+                trajectoryLine.ShowLine(false);
+            }
 
-    }
-    [Command]
-    public void CmdStart()
-    {
-
-    }
+            if (transform.position.y < -20f)
+            {
+                Scene currentScene = SceneManager.GetActiveScene();
+                SceneManager.LoadScene(currentScene.name);
+            }
+        }   
+    }*/
 }
