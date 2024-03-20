@@ -1798,7 +1798,7 @@ MonoBehaviour:
   sendTimeout: 5000
   receiveTimeout: 20000
   noDelay: 1
-  sslEnabled: 1
+  sslEnabled: 0
   sslProtocols: 3072
   sslCertJson: ./cert.json
   port: 7778

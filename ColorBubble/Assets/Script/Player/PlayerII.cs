@@ -74,14 +74,15 @@ public class PlayerII : NetworkBehaviour
 
     void Start()
     {
+        Input.gyro.enabled = true;
+
         rb = GetComponent<Rigidbody>();
         lineRotation = GetComponent<Rotation>();
         launchButton = GetComponent<Button>();
 
         //LoadSettings();
         //countdownText.gameObject.SetActive(false);
-        Input.gyro.enabled = true;  
-        
+              
         countDownCoroutine = StartCoroutine(CheckVelocityAfk());
         powerBarCoroutine = StartCoroutine(UpdatePowerBar());
     }
@@ -186,11 +187,17 @@ public class PlayerII : NetworkBehaviour
         {
             acceleration = Input.acceleration;
             CmdRotationChanged(acceleration.x);
+
+            horizontalInput = Input.GetAxis("Horizontal");
+            CmdHorizontalChanged(horizontalInput);
         }
         if(isServer)
         {
             float accelerationRotation = acceleration.x * rotationSpeed * Time.deltaTime;
             accumulatedRotation += accelerationRotation;
+
+            rotationAmount = horizontalInput * rotationSpeed * Time.deltaTime;
+            accumulatedRotation += rotationAmount;
         }
         
     }
@@ -198,6 +205,11 @@ public class PlayerII : NetworkBehaviour
     void CmdRotationChanged(float input)
     {
         acceleration.x = input;
+    }
+    [Command(channel = Channels.Unreliable)]
+    void CmdHorizontalChanged(float input)
+    {
+        horizontalInput = input;
     }
 
     private void LateUpdate()
