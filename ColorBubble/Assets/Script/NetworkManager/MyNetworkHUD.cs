@@ -64,7 +64,6 @@ public class MyNetworkHUD : MonoBehaviour
 
     public void UpdateInputField()
     {
-        Debug.Log(inputField.text +"sdsd");
         manager.networkAddress = inputField.text;
         
     }

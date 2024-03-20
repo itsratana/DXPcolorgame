@@ -123,9 +123,9 @@ RectTransform:
   - {fileID: 7797087924282596619}
   m_Father: {fileID: 3373943214331088023}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 296.8667, y: -4.2583466}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -101, y: -4.2583466}
   m_SizeDelta: {x: 32.53, y: 280}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5165843141459074298
@@ -748,7 +748,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -904,11 +904,13 @@ MonoBehaviour:
   refManager: {fileID: 0}
   horizontalSpeed: 10
   veloForce: 0.33
+  forceMultiplier: 0
+  launchButton: {fileID: 0}
   powerBarGO: {fileID: 464955560316394400}
   PowerBarMask: {fileID: 7930219165915690719}
   barChangeSpeed: 3
-  rotationSpeed: 100
   trajectoryLine: {fileID: 7119310292805555006}
+  rotationSpeed: 100
   currentColor: 0
   colorPlayer:
   - {r: 1, g: 0, b: 0, a: 0}

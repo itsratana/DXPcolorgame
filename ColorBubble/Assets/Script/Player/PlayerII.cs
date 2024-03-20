@@ -10,9 +10,16 @@ public class PlayerII : NetworkBehaviour
     private Rigidbody rb;
     [SerializeField] float horizontalSpeed;
     private float curSpeed;
-    private int Bounce = 0;
     Vector3 lastVelocity;
     [SerializeField] private float veloForce;
+
+    [Header("Velocity")]
+    [SerializeField] private float forceMultiplier;
+    private float launchForce;
+
+    [Header("Button")]
+    public Button launchButton;
+    private bool isLaunchPressed = false;
 
     [Header("PowerBar")]
     public GameObject powerBarGO;
@@ -22,16 +29,17 @@ public class PlayerII : NetworkBehaviour
     float currentPowerBarValue = 0;
     bool powerIsIncreasing = true;
     bool PowerBarON = true;
+    private Coroutine powerBarCoroutine;
 
     [Header("Rotation")]
-    private Rotation lineRotation;
-    private float accumulatedRotation = 0f;
+    [SerializeField] TrajectoryLine trajectoryLine;
     public float rotationSpeed = 100f;
+    private Rotation lineRotation;
+    private float accumulatedRotation = 0f;    
     private float rotationAmount;
     float horizontalInput;
     Vector3 acceleration;
-    private Vector3 moveDirection;
-    [SerializeField] TrajectoryLine trajectoryLine;
+    private Vector3 moveDirection;  
 
     Vector3 playerMovement;
 
@@ -41,8 +49,7 @@ public class PlayerII : NetworkBehaviour
 
     [Header("Countdown")]
     private float checkInterval = 0.1f;
-    private float afkCheck = 11f;
-    public TextMeshProUGUI countdownText;
+    private float afkCheck = 11f;   
     private Coroutine countDownCoroutine;
     private bool isCoroutineStart = false;
 
@@ -62,19 +69,21 @@ public class PlayerII : NetworkBehaviour
     private void Awake()
     {
         syncDirection = SyncDirection.ClientToServer;
+        refManager = FindObjectOfType<RefManager>();
     }
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         lineRotation = GetComponent<Rotation>();
-        //LoadSettings();
+        launchButton = GetComponent<Button>();
 
-        countdownText.gameObject.SetActive(false);
-        Input.gyro.enabled = true;    
+        //LoadSettings();
+        //countdownText.gameObject.SetActive(false);
+        Input.gyro.enabled = true;  
         
         countDownCoroutine = StartCoroutine(CheckVelocityAfk());
-        StartCoroutine(UpdatePowerBar());
+        powerBarCoroutine = StartCoroutine(UpdatePowerBar());
     }
 
     void Update()
@@ -85,7 +94,48 @@ public class PlayerII : NetworkBehaviour
     }
     private void PlayerMovement()
     {
+        launchForce = currentPowerBarValue * forceMultiplier;
+        playerMovement = transform.forward;
 
+        /*if (isLocalPlayer)
+        {
+            OnClickLaunch();
+        }*/
+        if (isServer)
+        {
+            if (isLaunchPressed)
+            {
+                isLaunchPressed = false;
+                if (rb.velocity.magnitude < 0.01f)
+                {
+                    rb.AddForce(playerMovement * launchForce, ForceMode.Impulse);
+                    StopCoroutine(countDownCoroutine);
+                    StopCoroutine(powerBarCoroutine);
+                    isCoroutineStart = false;
+                    refManager.countdownTime.gameObject.SetActive(false);
+                }
+            }
+            if(rb.velocity.magnitude < 0.01f)
+            {
+                powerBarGO.SetActive(true);
+                trajectoryLine.ShowLine(true);
+                if (!isCoroutineStart)
+                {
+                    countDownCoroutine = StartCoroutine(CheckVelocityAfk());
+                    powerBarCoroutine = StartCoroutine(UpdatePowerBar());
+                }
+            }
+            else
+            {
+                powerBarGO.SetActive(false);
+                trajectoryLine.ShowLine(false);
+            }
+        }
+    }
+    [Command]
+    public void OnClickLaunch()
+    {
+        isLaunchPressed = true;
     }
     IEnumerator UpdatePowerBar()
     {
@@ -112,21 +162,21 @@ public class PlayerII : NetworkBehaviour
             PowerBarMask.fillAmount = fill;
             yield return new WaitForSeconds(0.02f);
 
-            if (Input.touchCount > 0)
+            /*if (Input.touchCount > 0)
             {
                 PowerBarON = false;
-                //LaunchRocket();
+                PlayerMovement();
                 StartCoroutine(TurnOffPowerBar());
 
-            }
+            }*/
         }
         yield return null;
     }
-    IEnumerator TurnOffPowerBar()
+    /*IEnumerator TurnOffPowerBar()
     {
         yield return new WaitForSeconds(0.5f);
         powerBarGO.SetActive(false);
-    }
+    }*/
     private void Rotation()
     {
         accumulatedRotation = Mathf.Clamp(accumulatedRotation, -30f, 30f);
@@ -134,16 +184,11 @@ public class PlayerII : NetworkBehaviour
 
         if (isLocalPlayer)
         {
-           // horizontalInput = Input.GetAxis("Horizontal");
             acceleration = Input.acceleration;
-           // CmdInputChanged(horizontalInput);
             CmdRotationChanged(acceleration.x);
         }
         if(isServer)
         {
-            rotationAmount = horizontalInput * rotationSpeed * Time.deltaTime;
-            accumulatedRotation += rotationAmount;
-
             float accelerationRotation = acceleration.x * rotationSpeed * Time.deltaTime;
             accumulatedRotation += accelerationRotation;
         }
@@ -168,7 +213,7 @@ public class PlayerII : NetworkBehaviour
             moveDirection = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
 
             rb.velocity = moveDirection * Mathf.Max(curSpeed, 0);
-            Bounce++;
+            //Bounce++;
         }
     }
 
@@ -189,7 +234,7 @@ public class PlayerII : NetworkBehaviour
                 elapsedTime += checkInterval;
                 if (elapsedTime >= 1)
                 {
-                    countdownText.gameObject.SetActive(true);
+                    refManager.countdownTime.gameObject.SetActive(true);
                 }
             }
             else
@@ -210,20 +255,19 @@ public class PlayerII : NetworkBehaviour
     }
     void UpdateCountdownText(float timeRemaining)
     {
-        countdownText.text = Mathf.CeilToInt(timeRemaining).ToString("0");
+        refManager.countdownTime.text = Mathf.CeilToInt(timeRemaining).ToString("0");
     }
 
     public override void OnStartClient()
     {
         base.OnStartClient();
-        refManager = FindObjectOfType<RefManager>();
         if (refManager != null)
         {
-            countdownText = refManager.countdownTime;
             refManager.virtualCamera.Follow = transform;
-
             if (isLocalPlayer)
             {
+                launchButton = RefManager.Instance.launchButton;
+                launchButton.onClick.AddListener(OnClickLaunch);
                 CmdSetupRefManager();
             }
         }
@@ -231,12 +275,8 @@ public class PlayerII : NetworkBehaviour
     [Command]
     private void CmdSetupRefManager()
     {
-        refManager = FindObjectOfType<RefManager>();
         if (refManager != null)
-        {
-            countdownText = refManager.countdownTime;
             refManager.virtualCamera.Follow = transform;
-        }
     }
     /*private void PlayerMovement()
     {

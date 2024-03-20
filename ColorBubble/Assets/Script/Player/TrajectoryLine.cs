@@ -14,13 +14,11 @@ public class TrajectoryLine : MonoBehaviour
     private Vector3 direction;
 
     private LineRenderer lineRenderer;
-    private Camera cam;
     private RaycastHit hit;
 
     void Start()
     {
         lineRenderer = GetComponent<LineRenderer>();
-        cam = Camera.main;
     }
 
     void Update()
