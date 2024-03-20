@@ -7,15 +7,21 @@ using Mirror;
 public class PlayerII : NetworkBehaviour
 {
     public RefManager refManager;
-
-    //Player
-    //private bool isDead = false;
     private Rigidbody rb;
     [SerializeField] float horizontalSpeed;
     private float curSpeed;
     private int Bounce = 0;
     Vector3 lastVelocity;
     [SerializeField] private float veloForce;
+
+    [Header("PowerBar")]
+    public GameObject powerBarGO;
+    public Image PowerBarMask;
+    public float barChangeSpeed = 1;
+    float maxPowerBarValue = 100;
+    float currentPowerBarValue = 0;
+    bool powerIsIncreasing = true;
+    bool PowerBarON = true;
 
     [Header("Rotation")]
     private Rotation lineRotation;
@@ -24,7 +30,6 @@ public class PlayerII : NetworkBehaviour
     private float rotationAmount;
     float horizontalInput;
     Vector3 acceleration;
-
     private Vector3 moveDirection;
     [SerializeField] TrajectoryLine trajectoryLine;
 
@@ -40,14 +45,6 @@ public class PlayerII : NetworkBehaviour
     public TextMeshProUGUI countdownText;
     private Coroutine countDownCoroutine;
     private bool isCoroutineStart = false;
-
-    /*private void OnGUI()
-    {
-        if (GUI.Button(new Rect(10, 10, 200, 100), "Click"))
-        {
-            LoadSettings();
-        }
-    }*/
 
     public enum PlayerColor
     {
@@ -77,6 +74,7 @@ public class PlayerII : NetworkBehaviour
         Input.gyro.enabled = true;    
         
         countDownCoroutine = StartCoroutine(CheckVelocityAfk());
+        StartCoroutine(UpdatePowerBar());
     }
 
     void Update()
@@ -88,6 +86,46 @@ public class PlayerII : NetworkBehaviour
     private void PlayerMovement()
     {
 
+    }
+    IEnumerator UpdatePowerBar()
+    {
+        while (PowerBarON)
+        {
+            if (!powerIsIncreasing)
+            {
+                currentPowerBarValue -= barChangeSpeed;
+                if (currentPowerBarValue <= 0)
+                {
+                    powerIsIncreasing = true;
+                }
+            }
+            if (powerIsIncreasing)
+            {
+                currentPowerBarValue += barChangeSpeed;
+                if (currentPowerBarValue >= maxPowerBarValue)
+                {
+                    powerIsIncreasing = false;
+                }
+            }
+
+            float fill = currentPowerBarValue / maxPowerBarValue;
+            PowerBarMask.fillAmount = fill;
+            yield return new WaitForSeconds(0.02f);
+
+            if (Input.touchCount > 0)
+            {
+                PowerBarON = false;
+                //LaunchRocket();
+                StartCoroutine(TurnOffPowerBar());
+
+            }
+        }
+        yield return null;
+    }
+    IEnumerator TurnOffPowerBar()
+    {
+        yield return new WaitForSeconds(0.5f);
+        powerBarGO.SetActive(false);
     }
     private void Rotation()
     {
@@ -117,24 +155,6 @@ public class PlayerII : NetworkBehaviour
         acceleration.x = input;
     }
 
-    /*public void UpdateThreshold(float newThreshold)
-    {
-        threshold = newThreshold;
-    }
-    public void UpdateLoudnessSen(float newLoudnessSen)
-    {
-        loudnessSensibility = newLoudnessSen;
-    }
-    public void UpdateRotationSen(float newRotationSpeed)
-    {
-        rotationSpeed = newRotationSpeed;
-    }*/
-
-    [Command]
-    public void CmdRotationSen(float newRotationSpeed)
-    {
-        rotationSpeed = newRotationSpeed;
-    }
     private void LateUpdate()
     {
         lastVelocity = rb.velocity;
