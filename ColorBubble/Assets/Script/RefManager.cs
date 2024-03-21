@@ -9,8 +9,16 @@ public class RefManager : MonoBehaviour
 {
     public static RefManager Instance { get; private set; }
 
-    public TextMeshProUGUI countdownTime;
-    public CinemachineVirtualCamera virtualCamera;
+    [Header("Camera")]
+    public CameraFollow cameraP1;
+    public CameraFollow cameraP2;
+
+    [Header("AFK Countdown")]
+    public TextMeshProUGUI countdownTimeP1;
+    public TextMeshProUGUI countdownTimeP2;
+
+    [Header("Score")]
+
     public RectTransform networkInputField;
     public Button launchButton;
 

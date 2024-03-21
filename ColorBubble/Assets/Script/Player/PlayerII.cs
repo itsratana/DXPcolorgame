@@ -6,6 +6,11 @@ using Mirror;
 
 public class PlayerII : NetworkBehaviour
 {
+    int playerID;
+
+    public CameraFollow cameraTransform;
+
+    MyNetworkManager myNetworkManager = (MyNetworkManager)NetworkManager.singleton;
     public RefManager refManager;
     private Rigidbody rb;
     [SerializeField] float horizontalSpeed;
@@ -66,6 +71,12 @@ public class PlayerII : NetworkBehaviour
     {
         currentColor = newPlayerColor;
     }
+
+    [ServerCallback]
+    public void SetUpID(int id)
+    {
+       playerID = id;
+    }
     private void Awake()
     {
         syncDirection = SyncDirection.ClientToServer;
@@ -86,8 +97,11 @@ public class PlayerII : NetworkBehaviour
         Rotation();
 
         if (isServer)
-        {
-            Timer.instance.TimerCountdown();
+        {               
+            if (myNetworkManager.isGameStart)
+            {
+                Timer.instance.TimerCountdown();
+            }           
         }
     }
     private void PlayerMovement()
@@ -97,32 +111,42 @@ public class PlayerII : NetworkBehaviour
 
         if (isServer)
         {
-            if (isLaunchPressed)
+            if (myNetworkManager.isGameStart) 
             {
-                isLaunchPressed = false;
-                if (rb.velocity.magnitude < 0.01f)
+                if (isLaunchPressed)
                 {
-                    rb.AddForce(playerMovement * launchForce, ForceMode.Impulse);
-                    StopCoroutine(countDownCoroutine);
-                    StopCoroutine(powerBarCoroutine);
-                    isCoroutineStart = false;
-                    refManager.countdownTime.gameObject.SetActive(false);
+                    isLaunchPressed = false;
+                    if (rb.velocity.magnitude < 0.01f)
+                    {
+                        rb.AddForce(playerMovement * launchForce, ForceMode.Impulse);
+                        StopCoroutine(countDownCoroutine);
+                        StopCoroutine(powerBarCoroutine);
+                        isCoroutineStart = false;
+                        if (playerID == 0)
+                        {
+                        refManager.countdownTimeP1.gameObject.SetActive(false);
+                        }
+                        else if (playerID == 1)
+                        {
+                            refManager.countdownTimeP2.gameObject.SetActive(false);
+                        }
+                    }
                 }
-            }
-            if(rb.velocity.magnitude < 0.01f)
-            {
-                powerBarGO.SetActive(true);
-                trajectoryLine.ShowLine(true);
-                if (!isCoroutineStart)
+                if(rb.velocity.magnitude < 0.01f)
                 {
-                    countDownCoroutine = StartCoroutine(CheckVelocityAfk());
-                    powerBarCoroutine = StartCoroutine(UpdatePowerBar());
+                    powerBarGO.SetActive(true);
+                    trajectoryLine.ShowLine(true);
+                    if (!isCoroutineStart)
+                    {
+                        countDownCoroutine = StartCoroutine(CheckVelocityAfk());
+                        powerBarCoroutine = StartCoroutine(UpdatePowerBar());
+                    }
                 }
-            }
-            else
-            {
-                powerBarGO.SetActive(false);
-                trajectoryLine.ShowLine(false);
+                else
+                {
+                    powerBarGO.SetActive(false);
+                    trajectoryLine.ShowLine(false);
+                }               
             }
         }
     }
@@ -225,11 +249,25 @@ public class PlayerII : NetworkBehaviour
                 elapsedTime += checkInterval;
                 if (elapsedTime >= 1)
                 {
-                    refManager.countdownTime.gameObject.SetActive(true);
+                    if (playerID == 0) 
+                    {
+                        refManager.countdownTimeP1.gameObject.SetActive(true);                    
+                    }
+                    else if (playerID == 1)
+                    {
+                        refManager.countdownTimeP2.gameObject.SetActive(true);
+                    }
                 }
                 else if(elapsedTime > 10)
                 {
-                    refManager.countdownTime.gameObject.SetActive(false);
+                    if (playerID == 0)
+                    {
+                        refManager.countdownTimeP2.gameObject.SetActive(false);
+                    }
+                    else if (playerID == 1)
+                    {
+                        refManager.countdownTimeP2.gameObject.SetActive(false);
+                    }
                 }
             }
             else
@@ -250,7 +288,14 @@ public class PlayerII : NetworkBehaviour
     }
     void UpdateCountdownText(float timeRemaining)
     {
-        refManager.countdownTime.text = Mathf.CeilToInt(timeRemaining).ToString("0");
+        if (playerID == 0)
+        {
+            refManager.countdownTimeP1.text = Mathf.CeilToInt(timeRemaining).ToString("0");
+        }
+        else if (playerID == 1)
+        {
+            refManager.countdownTimeP2.text = Mathf.CeilToInt(timeRemaining).ToString("0");
+        }
     }
 
     public override void OnStartClient()
@@ -258,19 +303,20 @@ public class PlayerII : NetworkBehaviour
         base.OnStartClient();
         if (refManager != null)
         {
-            refManager.virtualCamera.Follow = transform;
+            //cameraTransform = refManager.cameraP1;
+            //cameraTransform = refManager.cameraP2;
             if (isLocalPlayer)
             {
                 launchButton = RefManager.Instance.launchButton;
                 launchButton.onClick.AddListener(OnClickLaunch);
-                CmdSetupRefManager();
+                //CmdSetupRefManager();
             }
         }
     }
-    [Command]
+/*    [Command]
     private void CmdSetupRefManager()
     {
         if (refManager != null)
             refManager.virtualCamera.Follow = transform;
-    }
+    }*/
 }
