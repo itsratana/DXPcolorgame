@@ -1,3 +1,4 @@
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -41,11 +42,8 @@ public class GameOverP2 : MonoBehaviour
 
         Scene currentScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(currentScene.name);
-    }
 
-    public void MoveToScene(int SceneID)
-    {
-        SceneManager.LoadScene(SceneID);
+        NetworkServer.DisconnectAll();
     }
 }
 

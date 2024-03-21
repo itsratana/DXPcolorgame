@@ -15,7 +15,7 @@ public class PlayerII : NetworkBehaviour
 
     [Header("Velocity")]
     [SerializeField] private float forceMultiplier;
-    private float launchForce;
+    [SerializeField] private float launchForce;
 
     [Header("Button")]
     public Button launchButton;
@@ -25,10 +25,10 @@ public class PlayerII : NetworkBehaviour
     public GameObject powerBarGO;
     public Image PowerBarMask;
     public float barChangeSpeed = 1;
-    float maxPowerBarValue = 100;
+    private readonly float maxPowerBarValue = 100;
     float currentPowerBarValue = 0;
     bool powerIsIncreasing = true;
-    bool PowerBarON = true;
+    private readonly bool PowerBarON = true;
     private Coroutine powerBarCoroutine;
 
     [Header("Rotation")]
@@ -78,30 +78,23 @@ public class PlayerII : NetworkBehaviour
 
         rb = GetComponent<Rigidbody>();
         lineRotation = GetComponent<Rotation>();
-        launchButton = GetComponent<Button>();
-
-        //LoadSettings();
-        //countdownText.gameObject.SetActive(false);
-              
-        countDownCoroutine = StartCoroutine(CheckVelocityAfk());
-        powerBarCoroutine = StartCoroutine(UpdatePowerBar());
     }
 
     void Update()
     {
         PlayerMovement();
         Rotation();
-        Timer.instance.TimerCountdown();
+
+        if (isServer)
+        {
+            Timer.instance.TimerCountdown();
+        }
     }
     private void PlayerMovement()
     {
         launchForce = currentPowerBarValue * forceMultiplier;
         playerMovement = transform.forward;
 
-        /*if (isLocalPlayer)
-        {
-            OnClickLaunch();
-        }*/
         if (isServer)
         {
             if (isLaunchPressed)
@@ -158,26 +151,12 @@ public class PlayerII : NetworkBehaviour
                     powerIsIncreasing = false;
                 }
             }
-
             float fill = currentPowerBarValue / maxPowerBarValue;
             PowerBarMask.fillAmount = fill;
             yield return new WaitForSeconds(0.02f);
-
-            /*if (Input.touchCount > 0)
-            {
-                PowerBarON = false;
-                PlayerMovement();
-                StartCoroutine(TurnOffPowerBar());
-
-            }*/
         }
         yield return null;
     }
-    /*IEnumerator TurnOffPowerBar()
-    {
-        yield return new WaitForSeconds(0.5f);
-        powerBarGO.SetActive(false);
-    }*/
     private void Rotation()
     {
         accumulatedRotation = Mathf.Clamp(accumulatedRotation, -30f, 30f);
@@ -248,6 +227,10 @@ public class PlayerII : NetworkBehaviour
                 {
                     refManager.countdownTime.gameObject.SetActive(true);
                 }
+                else if(elapsedTime > 10)
+                {
+                    refManager.countdownTime.gameObject.SetActive(false);
+                }
             }
             else
             {
@@ -290,43 +273,4 @@ public class PlayerII : NetworkBehaviour
         if (refManager != null)
             refManager.virtualCamera.Follow = transform;
     }
-    /*private void PlayerMovement()
-    {
-        playerMovement = transform.forward;
-        if (isLocalPlayer)
-        {
-           
-        }
-        if (isServer)
-        {
-            if (loudness > threshold)
-            {
-                if (rb.velocity.magnitude < thresholdMove)
-                {
-                    rb.AddForce(playerMovement * loudness, ForceMode.Impulse);
-                    StopCoroutine(countDownCoroutine);
-                    isCoroutineStart = false;
-                    countdownText.gameObject.SetActive(false);
-                }
-            }
-            if (rb.velocity.magnitude < thresholdMove)
-            {
-                trajectoryLine.ShowLine(true);
-                if (!isCoroutineStart)
-                {
-                    countDownCoroutine = StartCoroutine(CheckVelocityAfk());
-                }
-            }
-            else
-            {
-                trajectoryLine.ShowLine(false);
-            }
-
-            if (transform.position.y < -20f)
-            {
-                Scene currentScene = SceneManager.GetActiveScene();
-                SceneManager.LoadScene(currentScene.name);
-            }
-        }   
-    }*/
 }

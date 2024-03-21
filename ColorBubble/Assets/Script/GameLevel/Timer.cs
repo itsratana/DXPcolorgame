@@ -30,6 +30,10 @@ public class Timer : MonoBehaviour
     {
         if (gameTime > 0f)
         {
+            if (gameTime <= 0)
+            {
+                gameTime = 0f;
+            }
             timeSpent += Time.deltaTime;
             gameTime -= Time.deltaTime;
             

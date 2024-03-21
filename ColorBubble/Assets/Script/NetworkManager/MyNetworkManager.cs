@@ -17,4 +17,18 @@ public class MyNetworkManager : NetworkManager
             RefManager.Instance.launchButton.gameObject.SetActive(true);
         }       
     }
+
+    public override void OnClientDisconnect()
+    {
+        if (RefManager.Instance.networkInputField)
+        {
+            RefManager.Instance.networkInputField.gameObject.SetActive(true);
+        }
+        if (RefManager.Instance.launchButton)
+        {
+            RefManager.Instance.launchButton.gameObject.SetActive(false);
+        }
+    }
+
+
 }

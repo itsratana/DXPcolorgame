@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Spike : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider other)
+    /*private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == 3)
         {
@@ -12,5 +12,5 @@ public class Spike : MonoBehaviour
             GameOverP2.instance.isGameOver = true;
 
         }
-    }
+    }*/
 }

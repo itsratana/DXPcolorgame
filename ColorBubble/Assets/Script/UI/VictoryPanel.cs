@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using Mirror;
 
 public class VictoryPanel : MonoBehaviour
 {
@@ -50,10 +51,7 @@ public class VictoryPanel : MonoBehaviour
 
         Scene currentScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(currentScene.name);
-    }
 
-    public void MoveToScene(int SceneID)
-    {
-        SceneManager.LoadScene(SceneID);
+        NetworkServer.DisconnectAll();
     }
 }
