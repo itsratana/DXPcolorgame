@@ -13,8 +13,10 @@ public class VictoryPanel : MonoBehaviour
     public GameObject victoryPanel;
     public bool hasWon = false;
     public Button restartGameOver;
-    public TextMeshProUGUI finalScoreText;
-    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI finalScoreTextP1;
+    public TextMeshProUGUI scoreTextP1;
+    public TextMeshProUGUI finalScoreTextP2;
+    public TextMeshProUGUI scoreTextP2;
 
     private void Awake()
     {
@@ -29,8 +31,11 @@ public class VictoryPanel : MonoBehaviour
     }
     private void Update()
     {
-        finalScoreText.text = ScoreManager.instance.finalScore.ToString();
-        scoreText.text = ScoreManager.instance.score.ToString();
+        finalScoreTextP1.text = ScoreManager.instance.finalScoreP1.ToString();
+        scoreTextP1.text = ScoreManager.instance.scoreP1.ToString();
+
+        finalScoreTextP2.text = ScoreManager.instance.finalScoreP2.ToString();
+        scoreTextP2.text = ScoreManager.instance.scoreP2.ToString();
     }
 
     public void Victory()

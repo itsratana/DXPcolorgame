@@ -2649,8 +2649,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreText: {fileID: 969793169}
-  score: 0
-  finalScore: 0
+  scoreP1: 0
+  finalScoreP1: 0
+  scoreP2: 0
+  finalScoreP2: 0
 --- !u!4 &733044733 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5899582934302895101, guid: 184ef30376d44b04e89dc5350e001739, type: 3}
@@ -3222,7 +3224,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1093436080
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3258,8 +3260,10 @@ MonoBehaviour:
   victoryPanel: {fileID: 903179207}
   hasWon: 0
   restartGameOver: {fileID: 102691149}
-  finalScoreText: {fileID: 241705850}
-  scoreText: {fileID: 1194535532}
+  finalScoreTextP1: {fileID: 0}
+  scoreTextP1: {fileID: 0}
+  finalScoreTextP2: {fileID: 0}
+  scoreTextP2: {fileID: 0}
 --- !u!1 &1094846534
 GameObject:
   m_ObjectHideFlags: 0
@@ -4266,8 +4270,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreText: {fileID: 422785035}
-  score: 0
-  finalScore: 0
+  scoreP1: 0
+  finalScoreP1: 0
+  scoreP2: 0
+  finalScoreP2: 0
 --- !u!1 &1596819050
 GameObject:
   m_ObjectHideFlags: 0
@@ -5212,7 +5218,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2104225136
 RectTransform:
   m_ObjectHideFlags: 0

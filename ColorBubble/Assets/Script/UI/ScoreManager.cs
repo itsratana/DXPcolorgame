@@ -10,10 +10,16 @@ public class ScoreManager : MonoBehaviour
 
     public TextMeshProUGUI scoreText;
 
-    [Header("Score")]
-    public int score = 0;
-    public int finalScore = 0;
-    private int comboMultiplier = 1;
+    [Header("P1 Score")]
+    public int scoreP1 = 0;
+    public int finalScoreP1 = 0;
+    private int comboMultiplierP1 = 1;
+
+    [Header("P2 Score")]
+    public int scoreP2 = 0;
+    public int finalScoreP2 = 0;
+    private int comboMultiplierP2 = 1;
+
     private float timeLeft;
     
     private void Awake()
@@ -32,30 +38,45 @@ public class ScoreManager : MonoBehaviour
     public void CalculateFinalScore()
     {
         timeLeft = Timer.instance.gameTime;
-        finalScore = Mathf.FloorToInt(score * timeLeft);
+        finalScoreP1 = Mathf.FloorToInt(scoreP1 * timeLeft);
+        finalScoreP2 = Mathf.FloorToInt(scoreP2 * timeLeft);
     }
     public void UpdateScoreText()
     {
-        scoreText.text = score.ToString();
+        scoreText.text = scoreP1.ToString();
+        scoreText.text = scoreP2.ToString();
     }
 
-    public void AddPoint()
+    public void AddPoint(int playerID)
     {
-        score += comboMultiplier;
-        comboMultiplier++;
+        switch (playerID)
+        {
+            case 0:
+                scoreP1 += comboMultiplierP1;
+                comboMultiplierP1++;
+                break;
+            case 1:
+                scoreP2 += comboMultiplierP2;
+                comboMultiplierP2++;
+                break;
+        }
+        
         UpdateScoreText();
     }
 
-    public void RemovePoint()
+    public void RemovePoint(int playerID)
     {
-        score -= 1;
-        comboMultiplier = 1;
+        scoreP1 -= 1;
+        comboMultiplierP1 = 1;
+        scoreP2 -= 1;  
+        comboMultiplierP2 = 1;
         UpdateScoreText();
     }
 
     public void scoreComboMultiplier(int multiplier)
     {
-        comboMultiplier *= multiplier;
+        comboMultiplierP1 *= multiplier;
+        comboMultiplierP2 *= multiplier;
         UpdateScoreText();
     }
 }

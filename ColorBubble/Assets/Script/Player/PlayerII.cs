@@ -6,7 +6,7 @@ using Mirror;
 
 public class PlayerII : NetworkBehaviour
 {
-    int playerID;
+    public int playerID;
 
     public CameraFollow cameraTransform;
 
@@ -89,6 +89,18 @@ public class PlayerII : NetworkBehaviour
 
         rb = GetComponent<Rigidbody>();
         lineRotation = GetComponent<Rotation>();
+
+        switch (playerID)
+        {
+            case 0:
+                powerBarGO = refManager.powerBarGOP1;
+                PowerBarMask = refManager.PowerBarMaskP1;
+                break; 
+            case 1:
+                powerBarGO = refManager.powerBarGOP2;
+                PowerBarMask = refManager .PowerBarMaskP2;
+                break;
+        }
     }
 
     void Update()
@@ -222,7 +234,7 @@ public class PlayerII : NetworkBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.layer == 8)
+        if (collision.gameObject.layer == 8 || collision.gameObject.layer == 3)
         {
             curSpeed = lastVelocity.magnitude;
             moveDirection = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);

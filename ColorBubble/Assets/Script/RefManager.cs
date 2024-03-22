@@ -17,7 +17,11 @@ public class RefManager : MonoBehaviour
     public TextMeshProUGUI countdownTimeP1;
     public TextMeshProUGUI countdownTimeP2;
 
-    [Header("Score")]
+    [Header("PowerBar")]
+    public GameObject powerBarGOP1;
+    public Image PowerBarMaskP1;
+    public GameObject powerBarGOP2;
+    public Image PowerBarMaskP2;
 
     public RectTransform networkInputField;
     public Button launchButton;
