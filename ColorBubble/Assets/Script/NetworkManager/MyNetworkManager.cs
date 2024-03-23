@@ -4,6 +4,11 @@ using UnityEngine;
 using Mirror;
 using System;
 
+public struct CreatePlayerMessage : NetworkMessage
+{
+
+}
+
 public class MyNetworkManager : NetworkManager
 {
     public bool isGameStart = false;
