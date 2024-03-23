@@ -3,9 +3,9 @@ using UnityEngine;
 public class ServerStarter : MonoBehaviour
 {
     [SerializeField] private MyNetworkHUD _myNetworkHUD = null;
-    [SerializeField] private Transform _titleGame = null;
+    //[SerializeField] private Transform _titleGame = null;
     [SerializeField] private Transform _qrCode = null;
-    [SerializeField] private NetworkInfo networkInfo = null;
+    //[SerializeField] private NetworkInfo networkInfo = null;
 
     private void Start()
     {

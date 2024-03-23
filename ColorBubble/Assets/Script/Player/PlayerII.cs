@@ -8,7 +8,7 @@ public class PlayerII : NetworkBehaviour
 {
     public int playerID;
 
-    public CameraFollow cameraTransform;
+    //public CameraFollow cameraTransform;
 
     MyNetworkManager myNetworkManager = (MyNetworkManager)NetworkManager.singleton;
     public RefManager refManager;
@@ -25,6 +25,8 @@ public class PlayerII : NetworkBehaviour
     [Header("Button")]
     public Button launchButton;
     private bool isLaunchPressed = false;
+    public Button playerReadyButton;
+    public bool isReady = false;
 
     [Header("PowerBar")]
     public GameObject powerBarGO;
@@ -40,21 +42,22 @@ public class PlayerII : NetworkBehaviour
     [SerializeField] TrajectoryLine trajectoryLine;
     public float rotationSpeed = 100f;
     private Rotation lineRotation;
-    private float accumulatedRotation = 0f;    
+    private float accumulatedRotation = 0f;
     private float rotationAmount;
     float horizontalInput;
     Vector3 acceleration;
-    private Vector3 moveDirection;  
+    private Vector3 moveDirection;
 
     Vector3 playerMovement;
 
     [Header("Color")]
     public PlayerColor currentColor = PlayerColor.red;
     public Color[] colorPlayer;
+    public MeshRenderer playerMeshRenderer;
 
     [Header("Countdown")]
     private float checkInterval = 0.1f;
-    private float afkCheck = 11f;   
+    private float afkCheck = 11f;
     private Coroutine countDownCoroutine;
     private bool isCoroutineStart = false;
 
@@ -75,7 +78,7 @@ public class PlayerII : NetworkBehaviour
     [ServerCallback]
     public void SetUpID(int id)
     {
-       playerID = id;
+        playerID = id;
     }
     private void Awake()
     {
@@ -93,12 +96,20 @@ public class PlayerII : NetworkBehaviour
         switch (playerID)
         {
             case 0:
+                currentColor = PlayerColor.red;
+                playerMeshRenderer.material.color = Color.red;
+
                 powerBarGO = refManager.powerBarGOP1;
                 PowerBarMask = refManager.PowerBarMaskP1;
-                break; 
+
+                break;
             case 1:
+                currentColor = PlayerColor.blue;
+                playerMeshRenderer.material.color = Color.blue;
+
                 powerBarGO = refManager.powerBarGOP2;
-                PowerBarMask = refManager .PowerBarMaskP2;
+                PowerBarMask = refManager.PowerBarMaskP2;
+
                 break;
         }
     }
@@ -109,11 +120,11 @@ public class PlayerII : NetworkBehaviour
         Rotation();
 
         if (isServer)
-        {               
+        {
             if (myNetworkManager.isGameStart)
             {
                 Timer.instance.TimerCountdown();
-            }           
+            }
         }
     }
     private void PlayerMovement()
@@ -123,7 +134,7 @@ public class PlayerII : NetworkBehaviour
 
         if (isServer)
         {
-            if (myNetworkManager.isGameStart) 
+            if (myNetworkManager.isGameStart)
             {
                 if (isLaunchPressed)
                 {
@@ -136,7 +147,7 @@ public class PlayerII : NetworkBehaviour
                         isCoroutineStart = false;
                         if (playerID == 0)
                         {
-                        refManager.countdownTimeP1.gameObject.SetActive(false);
+                            refManager.countdownTimeP1.gameObject.SetActive(false);
                         }
                         else if (playerID == 1)
                         {
@@ -144,7 +155,7 @@ public class PlayerII : NetworkBehaviour
                         }
                     }
                 }
-                if(rb.velocity.magnitude < 0.01f)
+                if (rb.velocity.magnitude < 0.01f)
                 {
                     powerBarGO.SetActive(true);
                     trajectoryLine.ShowLine(true);
@@ -158,14 +169,36 @@ public class PlayerII : NetworkBehaviour
                 {
                     powerBarGO.SetActive(false);
                     trajectoryLine.ShowLine(false);
-                }               
+                }
             }
         }
     }
     [Command]
-    public void OnClickLaunch()
+    public void CmdOnClickLaunch()
     {
         isLaunchPressed = true;
+    }
+    [Command]
+    public void CmdPlayerReady(bool isReady)
+    {
+        this.isReady = isReady;
+        myNetworkManager.PlayerReadyCheck();
+    }
+    public void PlayerReady()
+    {
+        isReady = !isReady;
+        CmdPlayerReady(isReady);
+        if (isLocalPlayer)
+        {
+            if (isReady)
+            {
+                playerReadyButton.GetComponent<Image>().color = new Color32(238, 91, 97, 255);
+            }
+            else
+            {
+                playerReadyButton.GetComponent<Image>().color = new Color32(91, 238, 109, 255);
+            }
+        }
     }
     IEnumerator UpdatePowerBar()
     {
@@ -206,7 +239,7 @@ public class PlayerII : NetworkBehaviour
             horizontalInput = Input.GetAxis("Horizontal");
             CmdHorizontalChanged(horizontalInput);
         }
-        if(isServer)
+        if (isServer)
         {
             float accelerationRotation = acceleration.x * rotationSpeed * Time.deltaTime;
             accumulatedRotation += accelerationRotation;
@@ -214,7 +247,7 @@ public class PlayerII : NetworkBehaviour
             rotationAmount = horizontalInput * rotationSpeed * Time.deltaTime;
             accumulatedRotation += rotationAmount;
         }
-        
+
     }
     [Command(channel = Channels.Unreliable)]
     void CmdRotationChanged(float input)
@@ -234,13 +267,20 @@ public class PlayerII : NetworkBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.layer == 8 || collision.gameObject.layer == 3)
+        if (collision.gameObject.layer == 8)
         {
             curSpeed = lastVelocity.magnitude;
             moveDirection = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
 
             rb.velocity = moveDirection * Mathf.Max(curSpeed, 0);
             //Bounce++;
+        }
+        if (collision.gameObject.layer == 3)
+        {
+            Vector3 forceDirection = collision.contacts[0].point - transform.position;
+            forceDirection = -forceDirection.normalized;
+            collision.gameObject.GetComponent<Rigidbody>().AddForce(forceDirection * curSpeed, ForceMode.Impulse);
+            rb.AddForce(-forceDirection * curSpeed, ForceMode.Impulse);
         }
     }
 
@@ -261,16 +301,16 @@ public class PlayerII : NetworkBehaviour
                 elapsedTime += checkInterval;
                 if (elapsedTime >= 1)
                 {
-                    if (playerID == 0) 
+                    if (playerID == 0)
                     {
-                        refManager.countdownTimeP1.gameObject.SetActive(true);                    
+                        refManager.countdownTimeP1.gameObject.SetActive(true);
                     }
                     else if (playerID == 1)
                     {
                         refManager.countdownTimeP2.gameObject.SetActive(true);
                     }
                 }
-                else if(elapsedTime > 10)
+                else if (elapsedTime > 10)
                 {
                     if (playerID == 0)
                     {
@@ -320,15 +360,34 @@ public class PlayerII : NetworkBehaviour
             if (isLocalPlayer)
             {
                 launchButton = RefManager.Instance.launchButton;
-                launchButton.onClick.AddListener(OnClickLaunch);
+                launchButton.onClick.AddListener(CmdOnClickLaunch);
+
+                playerReadyButton = refManager.readyButton;
+                playerReadyButton.onClick.AddListener(PlayerReady);
                 //CmdSetupRefManager();
             }
         }
     }
-/*    [Command]
-    private void CmdSetupRefManager()
+    [ClientRpc]
+    public void GameStart()
     {
-        if (refManager != null)
-            refManager.virtualCamera.Follow = transform;
-    }*/
+        if (isLocalPlayer)
+        {
+            if (RefManager.Instance.launchButton)
+            {
+                RefManager.Instance.launchButton.gameObject.SetActive(true);
+            }
+            if (RefManager.Instance.readyButton)
+            {
+                RefManager.Instance.readyButton.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    /*    [Command]
+        private void CmdSetupRefManager()
+        {
+            if (refManager != null)
+                refManager.virtualCamera.Follow = transform;
+        }*/
 }

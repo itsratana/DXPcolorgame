@@ -8,7 +8,8 @@ public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager instance { get; set; }
 
-    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI scoreTextP1;
+    public TextMeshProUGUI scoreTextP2;
 
     [Header("P1 Score")]
     public int scoreP1 = 0;
@@ -21,7 +22,7 @@ public class ScoreManager : MonoBehaviour
     private int comboMultiplierP2 = 1;
 
     private float timeLeft;
-    
+
     private void Awake()
     {
         instance = this;
@@ -43,8 +44,8 @@ public class ScoreManager : MonoBehaviour
     }
     public void UpdateScoreText()
     {
-        scoreText.text = scoreP1.ToString();
-        scoreText.text = scoreP2.ToString();
+        scoreTextP1.text = scoreP1.ToString();
+        scoreTextP2.text = scoreP2.ToString();
     }
 
     public void AddPoint(int playerID)
@@ -60,16 +61,23 @@ public class ScoreManager : MonoBehaviour
                 comboMultiplierP2++;
                 break;
         }
-        
+
         UpdateScoreText();
     }
 
     public void RemovePoint(int playerID)
     {
-        scoreP1 -= 1;
-        comboMultiplierP1 = 1;
-        scoreP2 -= 1;  
-        comboMultiplierP2 = 1;
+        switch (playerID)
+        {
+            case 0:
+                scoreP1 -= 1;
+                comboMultiplierP1 = 1;
+                break;
+            case 1:
+                scoreP2 -= 1;
+                comboMultiplierP2 = 1;
+                break;
+        }
         UpdateScoreText();
     }
 

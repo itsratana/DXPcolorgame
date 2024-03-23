@@ -9,7 +9,7 @@ public class CameraFollow : MonoBehaviour
     public Vector3 offset;
 
     private Vector3 velocity = Vector3.zero;
-    void LateUpdate()
+    void FixedUpdate()
     {
         if (playerTransform != null)
         {

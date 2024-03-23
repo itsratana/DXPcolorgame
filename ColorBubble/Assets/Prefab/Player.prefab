@@ -516,7 +516,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 3, z: 5}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7434169089738736216}
@@ -590,13 +590,15 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  cameraTransform: {fileID: 0}
+  playerID: 0
   refManager: {fileID: 0}
   horizontalSpeed: 10
   veloForce: 0.33
   forceMultiplier: 0.4
   launchForce: 0
   launchButton: {fileID: 0}
+  playerReadyButton: {fileID: 0}
+  isReady: 0
   powerBarGO: {fileID: 0}
   PowerBarMask: {fileID: 0}
   barChangeSpeed: 3
@@ -607,6 +609,7 @@ MonoBehaviour:
   - {r: 1, g: 0, b: 0, a: 0}
   - {r: 0.008320808, g: 0, b: 1, a: 0}
   - {r: 0, g: 1, b: 0.022618055, a: 0}
+  playerMeshRenderer: {fileID: 1728800034406493733}
 --- !u!114 &7442495241604189559
 MonoBehaviour:
   m_ObjectHideFlags: 0

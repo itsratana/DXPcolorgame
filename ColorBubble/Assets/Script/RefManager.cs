@@ -25,6 +25,9 @@ public class RefManager : MonoBehaviour
 
     public RectTransform networkInputField;
     public Button launchButton;
+    public Button readyButton;
+
+    public TextMeshProUGUI startingGameCountdown;
 
     private void Awake()
     {

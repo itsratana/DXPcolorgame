@@ -10,45 +10,99 @@ public class MyNetworkManager : NetworkManager
 
     public List<PlayerII> players = new List<PlayerII>();
 
+    private Coroutine startingGameCoroutine;
+
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
         base.OnServerAddPlayer(conn);
         PlayerII player = conn.identity.GetComponent<PlayerII>();
         if (player != null)
         {
-            player.SetUpID(players.Count);
-            players.Add(player);
-            if (players.Count == 1)
+            for (int i = 0; i < players.Count; i++)
             {
-                RefManager.Instance.cameraP1.playerTransform = players[0].transform;
+                if (players[i] == null)
+                {
+                    players[i] = player;
+                    player.SetUpID(i);
+                    if (i == 0)
+                    {
+                        RefManager.Instance.cameraP1.playerTransform = players[i].transform;
+                    }
+                    else if (i == 1)
+                    {
+                        RefManager.Instance.cameraP2.playerTransform = players[i].transform;
+                    }
+                    break;
+                }
             }
-            else if (players.Count == 2)
-            {
-                RefManager.Instance.cameraP2.playerTransform = players[1].transform;
-            }
-        }
-
-        if (numPlayers == 2)
-        {
-            isGameStart = true;
         }
     }
     public override void OnServerDisconnect(NetworkConnectionToClient conn)
     {
-        PlayerII player = conn.identity.GetComponent<PlayerII>();
-        players.Remove(player);
         base.OnServerDisconnect(conn);
+        PlayerII player = conn.identity.GetComponent<PlayerII>();
+
+        if (player != null && players.Contains(player))
+        {
+            players.Remove(player);
+        }
+    }
+
+    public void PlayerReadyCheck()
+    {
+        for (int i = 0; i < players.Count; i++)
+        {
+            if (players[i] != null)
+            {
+                if (!players[i].isReady)
+                {
+                    RefManager.Instance.startingGameCountdown.gameObject.SetActive(false);                    
+                    if (startingGameCoroutine != null)
+                    {
+                        StopCoroutine(startingGameCoroutine);
+                    }
+                    return;
+                }
+            }
+        }
+        RefManager.Instance.startingGameCountdown.gameObject.SetActive(true);
+        startingGameCoroutine = StartCoroutine(StartingGameCountdown());
+    }
+
+    IEnumerator StartingGameCountdown()
+    {
+        int countdown = 3;
+        while (countdown >= 0)
+        {
+            UpdateStartingCountdownText(countdown);
+            yield return new WaitForSeconds(1);
+            countdown--;
+        }
+        RefManager.Instance.startingGameCountdown.gameObject.SetActive(false);
+        isGameStart = true;
+
+        foreach (PlayerII player in players)
+        {
+            player.GameStart();
+        }
+    }
+
+    public void UpdateStartingCountdownText(float countdownTime)
+    {
+        RefManager.Instance.startingGameCountdown.text = Mathf.CeilToInt(countdownTime).ToString("0");
     }
 
     public override void OnStartClient()
     {
+        Debug.Log("Start Client");
         if (RefManager.Instance.networkInputField)
         {
             RefManager.Instance.networkInputField.gameObject.SetActive(false);
         }
-        if (RefManager.Instance.launchButton)
+        if (RefManager.Instance.readyButton)
         {
-            RefManager.Instance.launchButton.gameObject.SetActive(true);
+            Debug.Log("Set ready button to true");
+            RefManager.Instance.readyButton.gameObject.SetActive(true);
         }
     }
 
