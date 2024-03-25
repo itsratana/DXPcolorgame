@@ -2,18 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
-using System;
-
-public struct CreatePlayerMessage : NetworkMessage
-{
-
-}
 
 public class MyNetworkManager : NetworkManager
 {
     public bool isGameStart = false;
 
     public List<PlayerII> players = new List<PlayerII>();
+
+    public List<Transform> playerStartPositions = new List<Transform>();
 
     private Coroutine startingGameCoroutine;
 
@@ -32,10 +28,12 @@ public class MyNetworkManager : NetworkManager
                     if (i == 0)
                     {
                         RefManager.Instance.cameraP1.playerTransform = players[i].transform;
+                        players[i].transform.position = playerStartPositions[i].position;
                     }
                     else if (i == 1)
                     {
                         RefManager.Instance.cameraP2.playerTransform = players[i].transform;
+                        players[i].transform.position = playerStartPositions[i].position;
                     }
                     break;
                 }
@@ -44,8 +42,8 @@ public class MyNetworkManager : NetworkManager
     }
     public override void OnServerDisconnect(NetworkConnectionToClient conn)
     {
-        base.OnServerDisconnect(conn);
         PlayerII player = conn.identity.GetComponent<PlayerII>();
+        base.OnServerDisconnect(conn);
 
         if (player != null && players.Contains(player))
         {

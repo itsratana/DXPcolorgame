@@ -192,11 +192,13 @@ public class PlayerII : NetworkBehaviour
         {
             if (isReady)
             {
-                playerReadyButton.GetComponent<Image>().color = new Color32(238, 91, 97, 255);
+                playerReadyButton.GetComponent<Image>().color = new Color32(255, 0, 0, 255);
+                playerReadyButton.GetComponentInChildren<TextMeshProUGUI>().text = "Cancel";
             }
             else
             {
-                playerReadyButton.GetComponent<Image>().color = new Color32(91, 238, 109, 255);
+                playerReadyButton.GetComponent<Image>().color = new Color32(0, 255, 0, 255);
+                playerReadyButton.GetComponentInChildren<TextMeshProUGUI>().text = "Ready";
             }
         }
     }
