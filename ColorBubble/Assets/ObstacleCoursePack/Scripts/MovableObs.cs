@@ -1,10 +1,34 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class MovableObs : MonoBehaviour
 {
-	public float distance = 5f; //Distance that moves the object
+    [SerializeField] Transform endPos;
+    [SerializeField] float moveDuration;
+	[SerializeField] private Vector3 startPos;
+
+    private void Start()
+    {
+		startPos = transform.position;
+        MoveObject(endPos.position, startPos);
+    }
+
+    void MoveObject(Vector3 targetPosition, Vector3 targetPosition2)
+    {
+        transform.DOMove(targetPosition, moveDuration).SetEase(Ease.Linear).OnComplete(() =>
+        {
+            MoveObject(targetPosition2, targetPosition);
+            /*transform.DOMove(targetPosition2, moveDuration).SetEase(Ease.Linear).OnComplete(() =>
+            {
+                MoveObject(targetPosition, targetPosition2);
+            });*/
+
+        });
+    }
+
+    /*public float distance = 5f; //Distance that moves the object
 	public bool horizontal = true; //If the movement is horizontal or vertical
 	public float speed = 3f;
 	public float offset = 0f; //If yo want to modify the position at the start 
@@ -66,5 +90,5 @@ public class MovableObs : MonoBehaviour
 					isForward = true;
 			}
 		}
-    }
+    }*/
 }
