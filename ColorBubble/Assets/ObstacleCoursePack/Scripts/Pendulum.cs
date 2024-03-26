@@ -13,13 +13,13 @@ public class Pendulum : MonoBehaviour
 	void Awake()
     {
 		if(randomStart)
-			random = Random.Range(0f, 1f);
+			random = Random.Range(0f, 10f);
 	}
 
     // Update is called once per frame
     void Update()
     {
-		float angle = limit * Mathf.Sin(Time.time + random * speed);
+		float angle = limit * Mathf.Sin(Time.time * speed + random);
 		transform.localRotation = Quaternion.Euler(0, 0, angle);
 	}
 }
