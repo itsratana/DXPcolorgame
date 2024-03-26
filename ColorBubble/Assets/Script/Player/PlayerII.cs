@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 using Mirror;
+using System.Collections.Generic;
 
 public class PlayerII : NetworkBehaviour
 {
@@ -51,6 +52,7 @@ public class PlayerII : NetworkBehaviour
     Vector3 playerMovement;
 
     [Header("Color")]
+    public List<Transform> duckColors = new List<Transform>();
     public PlayerColor currentColor = PlayerColor.red;
     public Color[] colorPlayer;
     public MeshRenderer playerMeshRenderer;
@@ -64,6 +66,19 @@ public class PlayerII : NetworkBehaviour
     public enum PlayerColor
     {
         red, blue, green
+    }
+    public void ChangeColor(int colorID)
+    {
+        Debug.Log("Duck Color" + colorID);
+        for (int i = 0; i < duckColors.Count; i++)
+        {
+            if (i == colorID)
+            {
+                duckColors[i].gameObject.SetActive(true);
+                continue;
+            }
+            duckColors[i].gameObject.SetActive(false);
+        }
     }
     public void ChangeColor(Color newColor)
     {
@@ -98,6 +113,7 @@ public class PlayerII : NetworkBehaviour
             case 0:
                 currentColor = PlayerColor.red;
                 playerMeshRenderer.material.color = Color.red;
+                duckColors[0].gameObject.SetActive(true);
 
                 powerBarGO = refManager.powerBarGOP1;
                 PowerBarMask = refManager.PowerBarMaskP1;
@@ -106,6 +122,7 @@ public class PlayerII : NetworkBehaviour
             case 1:
                 currentColor = PlayerColor.blue;
                 playerMeshRenderer.material.color = Color.blue;
+                duckColors[1].gameObject.SetActive(true);
 
                 powerBarGO = refManager.powerBarGOP2;
                 PowerBarMask = refManager.PowerBarMaskP2;
@@ -283,6 +300,13 @@ public class PlayerII : NetworkBehaviour
             forceDirection = -forceDirection.normalized;
             collision.gameObject.GetComponent<Rigidbody>().AddForce(forceDirection * curSpeed, ForceMode.Impulse);
             rb.AddForce(-forceDirection * curSpeed, ForceMode.Impulse);
+        }
+        if (collision.gameObject.layer == 10)
+        {
+            curSpeed = lastVelocity.magnitude * 0.3f;
+            moveDirection = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
+
+            rb.velocity = moveDirection * Mathf.Max(curSpeed, 0);
         }
     }
 

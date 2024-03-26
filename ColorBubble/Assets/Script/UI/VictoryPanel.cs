@@ -10,9 +10,9 @@ public class VictoryPanel : MonoBehaviour
 {
     public static VictoryPanel instance {  get; private set; }
 
-    public GameObject victoryPanel;
+    public GameObject victoryPanelP1;
+    public GameObject victoryPanelP2;
     public bool hasWon = false;
-    public Button restartGameOver;
     public TextMeshProUGUI finalScoreTextP1;
     public TextMeshProUGUI scoreTextP1;
     public TextMeshProUGUI finalScoreTextP2;
@@ -24,10 +24,9 @@ public class VictoryPanel : MonoBehaviour
     }
     void Start()
     {
-        Time.timeScale = 1.0f;
-        victoryPanel.SetActive(false);
-
-        restartGameOver.onClick.AddListener(Restart);
+        //Time.timeScale = 1.0f;
+        victoryPanelP1.SetActive(false);
+        victoryPanelP2.SetActive(false);
     }
     private void Update()
     {
@@ -42,16 +41,18 @@ public class VictoryPanel : MonoBehaviour
     {
         if (!hasWon)
         {
-            victoryPanel.SetActive(true);
-            Time.timeScale = 0f;
+            victoryPanelP1.SetActive(true);
+            victoryPanelP2.SetActive(true);
+            //Time.timeScale = 0f;
             hasWon = true;
         }
     }
 
     public void Restart()
     {
-        victoryPanel.SetActive(false);
-        Time.timeScale = 1f;
+        victoryPanelP1.SetActive(false);
+        victoryPanelP2.SetActive(false);
+        //Time.timeScale = 1f;
         hasWon = true;
 
         Scene currentScene = SceneManager.GetActiveScene();
