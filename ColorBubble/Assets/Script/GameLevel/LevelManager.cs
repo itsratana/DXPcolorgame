@@ -26,16 +26,19 @@ public class LevelManager : MonoBehaviour
             else
             {
                 myZ += zIndex;
-                while (true)
+
+                int randomLevel = Random.Range(0, blockPrefab.Length);
+                Instantiate(blockPrefab[randomLevel], transform.position + new Vector3(0, 0, myZ), Quaternion.identity);
+                /*while (true)
                 {
-                    int randomLevel = Random.Range(0, blockPrefab.Length);                   
+                    int randomLevel = Random.Range(0, blockPrefab.Length);
                     if (!indexSpawnedPrefabs.Contains(randomLevel))
                     {
                         Instantiate(blockPrefab[randomLevel], transform.position + new Vector3(0, 0, myZ), Quaternion.identity);
                         indexSpawnedPrefabs.Add(randomLevel);
                         break;
-                    }                                   
-                }               
+                    }
+                } */              
             }
             if (i == amountBlock)
             {

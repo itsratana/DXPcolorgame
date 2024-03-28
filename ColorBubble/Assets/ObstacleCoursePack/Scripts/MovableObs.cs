@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using DG.Tweening;
 
 public class MovableObs : MonoBehaviour
@@ -20,11 +18,6 @@ public class MovableObs : MonoBehaviour
         transform.DOMove(targetPosition, moveDuration).SetEase(Ease.Linear).OnComplete(() =>
         {
             MoveObject(targetPosition2, targetPosition);
-            /*transform.DOMove(targetPosition2, moveDuration).SetEase(Ease.Linear).OnComplete(() =>
-            {
-                MoveObject(targetPosition, targetPosition2);
-            });*/
-
         });
     }
 

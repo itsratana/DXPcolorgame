@@ -9,6 +9,8 @@ public class RefManager : MonoBehaviour
 {
     public static RefManager Instance { get; private set; }
 
+    public List<Transform> playerStartPositions = new List<Transform>();
+
     [Header("Camera")]
     public CameraFollow cameraP1;
     public CameraFollow cameraP2;

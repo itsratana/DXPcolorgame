@@ -1,14 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
+using Mirror;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
-    public static Timer instance {  get; private set; }
+    public static Timer instance { get; private set; }
 
-    [SerializeField] private GameOverP2 gameOver;
+    public MyNetworkManager myNetworkManager;
+
+    [SerializeField] private GameOverPanel gameOver;
 
     public TextMeshProUGUI timer;
     public float gameTime;
@@ -16,6 +16,7 @@ public class Timer : MonoBehaviour
     public float timeSpent;
     private void Awake()
     {
+        myNetworkManager = (MyNetworkManager)NetworkManager.singleton;
         instance = this;
     }
     private void Start()
@@ -24,7 +25,7 @@ public class Timer : MonoBehaviour
     }
     void Update()
     {
-        
+
     }
     public void TimerCountdown()
     {
@@ -36,7 +37,7 @@ public class Timer : MonoBehaviour
             }
             timeSpent += Time.deltaTime;
             gameTime -= Time.deltaTime;
-            
+
             int minute = Mathf.FloorToInt(gameTime / 60);
             int second = Mathf.FloorToInt(gameTime % 60);
             int millisecond = Mathf.FloorToInt((gameTime * 100) % 100);
@@ -44,9 +45,35 @@ public class Timer : MonoBehaviour
         }
         else
         {
-            GameOverP2.instance.GameOver();
-            GameOverP2.instance.isGameOver = true;
+            if (myNetworkManager.players[0] != null)
+            {
+                if (!VictoryPanel.instance.p1HasWon)
+                {
+                    GameOverPanel.instance.isGameOverP1 = true;
+                }
+            }
+            if (myNetworkManager.players[1] != null)
+            {
+                if (!VictoryPanel.instance.p2HasWon)
+                {
+                    GameOverPanel.instance.isGameOverP2 = true;
+                }
+            }
+            GameOverPanel.instance.GameOver();
+
+            /*if (TryGetComponent(out PlayerII player))
+            {
+                if (player.playerID == 0)
+                {
+                    GameOverPanel.instance.isGameOverP1 = true;
+                }
+                if (player.playerID == 1)
+                {
+                    GameOverPanel.instance.isGameOverP2 = true;
+                }
+            }
+            GameOverPanel.instance.GameOver();*/
         }
-        
+
     }
 }

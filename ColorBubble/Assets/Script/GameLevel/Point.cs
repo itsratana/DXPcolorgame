@@ -29,7 +29,7 @@ public class Point : MonoBehaviour
                     CheckPointType(playerII, PlayerII.PlayerColor.green);
                 }
             }
-            Destroy(gameObject);
+            Destroy(transform.parent.gameObject);
         }
     }
     private void CheckPointType(PlayerII playerII, PlayerII.PlayerColor type)

@@ -2,14 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using UnityEngine.SceneManagement;
 
 public class MyNetworkManager : NetworkManager
 {
     public bool isGameStart = false;
 
     public List<PlayerII> players = new List<PlayerII>();
-
-    public List<Transform> playerStartPositions = new List<Transform>();
 
     private Coroutine startingGameCoroutine;
 
@@ -28,12 +27,12 @@ public class MyNetworkManager : NetworkManager
                     if (i == 0)
                     {
                         RefManager.Instance.cameraP1.playerTransform = players[i].transform;
-                        players[i].transform.position = playerStartPositions[i].position;
+                        players[i].transform.position = RefManager.Instance.playerStartPositions[i].position;
                     }
                     else if (i == 1)
                     {
                         RefManager.Instance.cameraP2.playerTransform = players[i].transform;
-                        players[i].transform.position = playerStartPositions[i].position;
+                        players[i].transform.position = RefManager.Instance.playerStartPositions[i].position;
                     }
                     break;
                 }
@@ -42,13 +41,35 @@ public class MyNetworkManager : NetworkManager
     }
     public override void OnServerDisconnect(NetworkConnectionToClient conn)
     {
-        PlayerII player = conn.identity.GetComponent<PlayerII>();
-        base.OnServerDisconnect(conn);
 
-        if (player != null && players.Contains(player))
+        PlayerII player = conn.identity.GetComponent<PlayerII>();
+
+        if (player != null)
         {
-            players.Remove(player);
+            for (int i = 0; i < players.Count; i++)
+            {
+                if (players[i] == player)
+                {
+                    players[i] = null;
+                }
+            }
         }
+        base.OnServerDisconnect(conn);
+        /*
+                if (player != null && players.Contains(player))
+                {
+                    players.Remove(player);
+                }*/
+    }
+
+    public override void OnServerConnect(NetworkConnectionToClient conn)
+    {
+        if(isGameStart)
+        {
+            conn.Disconnect();
+            return;
+        }
+        base.OnServerConnect(conn);
     }
 
     public void PlayerReadyCheck()
@@ -59,7 +80,7 @@ public class MyNetworkManager : NetworkManager
             {
                 if (!players[i].isReady)
                 {
-                    RefManager.Instance.startingGameCountdown.gameObject.SetActive(false);                    
+                    RefManager.Instance.startingGameCountdown.gameObject.SetActive(false);
                     if (startingGameCoroutine != null)
                     {
                         StopCoroutine(startingGameCoroutine);
@@ -86,7 +107,10 @@ public class MyNetworkManager : NetworkManager
 
         foreach (PlayerII player in players)
         {
-            player.GameStart();
+            if (player != null)
+            {
+                player.GameStart();
+            }
         }
     }
 
@@ -97,14 +121,12 @@ public class MyNetworkManager : NetworkManager
 
     public override void OnStartClient()
     {
-        Debug.Log("Start Client");
         if (RefManager.Instance.networkInputField)
         {
             RefManager.Instance.networkInputField.gameObject.SetActive(false);
         }
         if (RefManager.Instance.readyButton)
         {
-            Debug.Log("Set ready button to true");
             RefManager.Instance.readyButton.gameObject.SetActive(true);
         }
     }
@@ -114,6 +136,10 @@ public class MyNetworkManager : NetworkManager
         if (RefManager.Instance.networkInputField)
         {
             RefManager.Instance.networkInputField.gameObject.SetActive(true);
+        }
+        if (RefManager.Instance.readyButton)
+        {
+            RefManager.Instance.readyButton.gameObject.SetActive(false);
         }
         if (RefManager.Instance.launchButton)
         {

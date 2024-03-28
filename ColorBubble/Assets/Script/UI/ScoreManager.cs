@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Mirror;
 
 public class ScoreManager : MonoBehaviour
 {
+    private MyNetworkManager m_NetworkManager;
     public static ScoreManager instance { get; set; }
 
     public TextMeshProUGUI scoreTextP1;
@@ -13,19 +15,24 @@ public class ScoreManager : MonoBehaviour
 
     [Header("P1 Score")]
     public int scoreP1 = 0;
-    public int finalScoreP1 = 0;
+    public int finalScoreP1Win = 0;
+    public int finalScoreP1Lose = 0;
+    public float p1Distance;
     private int comboMultiplierP1 = 1;
 
     [Header("P2 Score")]
     public int scoreP2 = 0;
-    public int finalScoreP2 = 0;
+    public int finalScoreP2Win = 0;
+    public int finalScoreP2Lose = 0;
+    public float p2Distance;
     private int comboMultiplierP2 = 1;
 
-    private float timeLeft;
+    public float timeLeft;
 
     private void Awake()
     {
         instance = this;
+        m_NetworkManager = (MyNetworkManager)NetworkManager.singleton;
     }
     private void Start()
     {
@@ -35,12 +42,37 @@ public class ScoreManager : MonoBehaviour
     {
         UpdateScoreText();
         CalculateFinalScore();
+
+        if (m_NetworkManager.players[0] != null)
+        {
+            p1Distance = m_NetworkManager.players[0].CalculateDistance();
+        }
+        if (m_NetworkManager.players[1] != null)
+        {
+            p2Distance = m_NetworkManager.players[1].CalculateDistance();
+        }
     }
     public void CalculateFinalScore()
     {
         timeLeft = Timer.instance.gameTime;
-        finalScoreP1 = Mathf.FloorToInt(scoreP1 * timeLeft);
-        finalScoreP2 = Mathf.FloorToInt(scoreP2 * timeLeft);
+
+        if (!VictoryPanel.instance.p1HasWon)
+        {
+            finalScoreP1Win = Mathf.FloorToInt(scoreP1 + (timeLeft * 0.5f) + (p1Distance * 0.1f));
+        }
+        if (!VictoryPanel.instance.p2HasWon)
+        {
+            finalScoreP2Win = Mathf.FloorToInt(scoreP2 + (timeLeft * 0.5f) + (p2Distance * 0.1f));
+        }
+
+        if (!GameOverPanel.instance.isGameOverP1)
+        {
+            finalScoreP1Lose = Mathf.FloorToInt(scoreP1 + (p1Distance * 0.1f));
+        }
+        if (!GameOverPanel.instance.isGameOverP2)
+        {
+            finalScoreP2Lose = Mathf.FloorToInt(scoreP2 + (p1Distance * 0.1f));
+        }
     }
     public void UpdateScoreText()
     {
@@ -70,11 +102,11 @@ public class ScoreManager : MonoBehaviour
         switch (playerID)
         {
             case 0:
-                scoreP1 -= 1;
+                scoreP1 = Mathf.Max(0, scoreP1 - 1);
                 comboMultiplierP1 = 1;
                 break;
             case 1:
-                scoreP2 -= 1;
+                scoreP2 = Mathf.Max(0, scoreP2 - 1);
                 comboMultiplierP2 = 1;
                 break;
         }

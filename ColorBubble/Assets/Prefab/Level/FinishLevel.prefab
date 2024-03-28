@@ -257,6 +257,7 @@ GameObject:
   - component: {fileID: 8748965895174235198}
   - component: {fileID: 2729397928235502561}
   - component: {fileID: 5079056760084323347}
+  - component: {fileID: 8974091575516966666}
   m_Layer: 0
   m_Name: finish line
   m_TagString: Untagged
@@ -348,8 +349,20 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.11116999, y: 0.04142259, z: 0.10358891}
-  m_Center: {x: 0, y: -0.015938407, z: 0.048777107}
+  m_Size: {x: 0.11116999, y: 0.15206456, z: 0.15750611}
+  m_Center: {x: 0, y: 0.03938253, z: 0.07573569}
+--- !u!114 &8974091575516966666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4227431903229876602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc316bf92c53b404b88c7f85fc04a1ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5534578352324168378
 GameObject:
   m_ObjectHideFlags: 0
@@ -362,7 +375,7 @@ GameObject:
   - component: {fileID: 5760099388369597501}
   - component: {fileID: 1953636496144651649}
   - component: {fileID: 7813750871477060523}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: block (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -467,7 +480,7 @@ GameObject:
   - component: {fileID: 4104752050338139494}
   - component: {fileID: 3260450743686159041}
   - component: {fileID: 4752527084661929553}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: block
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -591,5 +604,109 @@ Transform:
   m_Children:
   - {fileID: 6455671077375252479}
   - {fileID: 8516257634590621670}
+  - {fileID: 7293174690310161111}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &7114621709909747004
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7679400369786721275}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: b08f3b15c45fab649895261b91435fae, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 6.1949444
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b08f3b15c45fab649895261b91435fae, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 6.1949444
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b08f3b15c45fab649895261b91435fae, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 6.1949444
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b08f3b15c45fab649895261b91435fae, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.13
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b08f3b15c45fab649895261b91435fae, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.63253784
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b08f3b15c45fab649895261b91435fae, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 16.61
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b08f3b15c45fab649895261b91435fae, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b08f3b15c45fab649895261b91435fae, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b08f3b15c45fab649895261b91435fae, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b08f3b15c45fab649895261b91435fae, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b08f3b15c45fab649895261b91435fae, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b08f3b15c45fab649895261b91435fae, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b08f3b15c45fab649895261b91435fae, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b08f3b15c45fab649895261b91435fae, type: 3}
+      propertyPath: m_Name
+      value: windmill
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b08f3b15c45fab649895261b91435fae, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2352033952067359962}
+  m_SourcePrefab: {fileID: 100100000, guid: b08f3b15c45fab649895261b91435fae, type: 3}
+--- !u!4 &7293174690310161111 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b08f3b15c45fab649895261b91435fae, type: 3}
+  m_PrefabInstance: {fileID: 7114621709909747004}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7961624247015495789 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b08f3b15c45fab649895261b91435fae, type: 3}
+  m_PrefabInstance: {fileID: 7114621709909747004}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &2352033952067359962
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7961624247015495789}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.2593637, y: 1.7316352, z: 1.0212972}
+  m_Center: {x: -0.023003964, y: 0.8658176, z: -0.010698336}

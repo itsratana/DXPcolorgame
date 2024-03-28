@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using Mirror;
 using System.Collections.Generic;
+using DG.Tweening;
 
 public class PlayerII : NetworkBehaviour
 {
@@ -15,13 +16,16 @@ public class PlayerII : NetworkBehaviour
     public RefManager refManager;
     private Rigidbody rb;
     [SerializeField] float horizontalSpeed;
-    private float curSpeed;
     Vector3 lastVelocity;
     [SerializeField] private float veloForce;
 
     [Header("Velocity")]
     [SerializeField] private float forceMultiplier;
     [SerializeField] private float launchForce;
+
+    [Header("Distance")]
+    public float playerDistance;
+    public Vector3 startPosition;
 
     [Header("Button")]
     public Button launchButton;
@@ -69,7 +73,6 @@ public class PlayerII : NetworkBehaviour
     }
     public void ChangeColor(int colorID)
     {
-        Debug.Log("Duck Color" + colorID);
         for (int i = 0; i < duckColors.Count; i++)
         {
             if (i == colorID)
@@ -111,6 +114,8 @@ public class PlayerII : NetworkBehaviour
         switch (playerID)
         {
             case 0:
+                trajectoryLine.gameObject.layer = 11;
+
                 currentColor = PlayerColor.red;
                 playerMeshRenderer.material.color = Color.red;
                 duckColors[0].gameObject.SetActive(true);
@@ -120,6 +125,8 @@ public class PlayerII : NetworkBehaviour
 
                 break;
             case 1:
+                trajectoryLine.gameObject.layer = 12;
+
                 currentColor = PlayerColor.blue;
                 playerMeshRenderer.material.color = Color.blue;
                 duckColors[1].gameObject.SetActive(true);
@@ -133,8 +140,33 @@ public class PlayerII : NetworkBehaviour
 
     void Update()
     {
+        if (playerID == 0)
+        {
+            if (isServer)
+            {
+                if (VictoryPanel.instance.p1HasWon || GameOverPanel.instance.isGameOverP1)
+                {
+                    StopAllCoroutines();
+                    powerBarGO.SetActive(false);
+                    return;
+                }
+            }
+        }
+        else if (playerID == 1)
+        {
+            if (isServer)
+            {
+                if (VictoryPanel.instance.p2HasWon || GameOverPanel.instance.isGameOverP2)
+                { 
+                    StopAllCoroutines();
+                    powerBarGO.SetActive(false);
+                    return; 
+                }
+            }
+        }
         PlayerMovement();
         Rotation();
+        CalculateDistance();
 
         if (isServer)
         {
@@ -178,7 +210,16 @@ public class PlayerII : NetworkBehaviour
                     trajectoryLine.ShowLine(true);
                     if (!isCoroutineStart)
                     {
+                        if (countDownCoroutine != null)
+                        {
+                            StopCoroutine(countDownCoroutine);
+                        }
                         countDownCoroutine = StartCoroutine(CheckVelocityAfk());
+
+                        if (powerBarCoroutine != null)
+                        {
+                            StopCoroutine(powerBarCoroutine);
+                        }
                         powerBarCoroutine = StartCoroutine(UpdatePowerBar());
                     }
                 }
@@ -217,8 +258,16 @@ public class PlayerII : NetworkBehaviour
                 playerReadyButton.GetComponent<Image>().color = new Color32(0, 255, 0, 255);
                 playerReadyButton.GetComponentInChildren<TextMeshProUGUI>().text = "Ready";
             }
+
         }
     }
+
+    public override void OnStopClient()
+    {
+        playerReadyButton.GetComponent<Image>().color = new Color32(0, 255, 0, 255);
+        playerReadyButton.GetComponentInChildren<TextMeshProUGUI>().text = "Ready";
+    }
+
     IEnumerator UpdatePowerBar()
     {
         while (PowerBarON)
@@ -279,6 +328,11 @@ public class PlayerII : NetworkBehaviour
         horizontalInput = input;
     }
 
+    public float CalculateDistance()
+    {
+        return playerDistance = Vector3.Distance(startPosition, transform.position);
+    }
+
     private void LateUpdate()
     {
         lastVelocity = rb.velocity;
@@ -288,7 +342,7 @@ public class PlayerII : NetworkBehaviour
     {
         if (collision.gameObject.layer == 8)
         {
-            curSpeed = lastVelocity.magnitude;
+            float curSpeed = lastVelocity.magnitude;
             moveDirection = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
 
             rb.velocity = moveDirection * Mathf.Max(curSpeed, 0);
@@ -296,6 +350,7 @@ public class PlayerII : NetworkBehaviour
         }
         if (collision.gameObject.layer == 3)
         {
+            float curSpeed = lastVelocity.magnitude;
             Vector3 forceDirection = collision.contacts[0].point - transform.position;
             forceDirection = -forceDirection.normalized;
             collision.gameObject.GetComponent<Rigidbody>().AddForce(forceDirection * curSpeed, ForceMode.Impulse);
@@ -303,7 +358,7 @@ public class PlayerII : NetworkBehaviour
         }
         if (collision.gameObject.layer == 10)
         {
-            curSpeed = lastVelocity.magnitude * 0.3f;
+            float curSpeed = lastVelocity.magnitude * 0.5f;
             moveDirection = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
 
             rb.velocity = moveDirection * Mathf.Max(curSpeed, 0);
@@ -357,10 +412,21 @@ public class PlayerII : NetworkBehaviour
         }
         if (elapsedTime >= afkCheck)
         {
-            //SetIsDead(true);
-            GameOverP2.instance.GameOver();
-            GameOverP2.instance.isGameOver = true;
-            Debug.Log("Inactive for 10 seconds!");
+            if (playerID == 0)
+            {
+                if (!VictoryPanel.instance.p1HasWon)
+                {
+                    GameOverPanel.instance.isGameOverP1 = true;
+                }
+            }
+            if (playerID == 1)
+            {
+                if (!VictoryPanel.instance.p2HasWon)
+                {
+                    GameOverPanel.instance.isGameOverP2 = true;
+                }
+            }
+            GameOverPanel.instance.GameOver();
         }
         isCoroutineStart = false;
     }
