@@ -25,17 +25,17 @@ public class ColorChanger : MonoBehaviour
             {
                 case ColorChange.red:
                     playerII.ChangeColor(playerII.colorPlayer[(int)Player.PlayerColor.red]);
-                    playerII.ChangeColor(0);
+                    //playerII.ChangeColor(0);
                     playerII.ChangePlayerColor(PlayerII.PlayerColor.red);
                     break;
                 case ColorChange.blue:
                     playerII.ChangeColor(playerII.colorPlayer[(int)PlayerII.PlayerColor.blue]);
-                    playerII.ChangeColor(1);
+                    //playerII.ChangeColor(1);
                     playerII.ChangePlayerColor(PlayerII.PlayerColor.blue);
                     break;
                 case ColorChange.green:
                     playerII.ChangeColor(playerII.colorPlayer[(int)PlayerII.PlayerColor.green]);
-                    playerII.ChangeColor(2);
+                    //playerII.ChangeColor(2);
                     playerII.ChangePlayerColor(PlayerII.PlayerColor.green);
                     break;
                 default:

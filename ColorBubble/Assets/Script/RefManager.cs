@@ -25,6 +25,7 @@ public class RefManager : MonoBehaviour
     public GameObject powerBarGOP2;
     public Image PowerBarMaskP2;
 
+    public Image identifierColor;
     public RectTransform networkInputField;
     public Button launchButton;
     public Button readyButton;

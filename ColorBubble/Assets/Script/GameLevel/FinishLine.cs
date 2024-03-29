@@ -10,13 +10,19 @@ public class FinishLine : MonoBehaviour
         {
             if (other.TryGetComponent(out PlayerII player))
             {
-                if (player.playerID == 0)
+                if (!GameOverPanel.instance.isGameOverP1)
                 {
-                    VictoryPanel.instance.p1HasWon = true;
+                    if (player.playerID == 0)
+                    {
+                        VictoryPanel.instance.p1HasWon = true;
+                    }
                 }
-                if (player.playerID == 1)
+                if (!GameOverPanel.instance.isGameOverP2)
                 {
-                    VictoryPanel.instance.p2HasWon = true;
+                    if (player.playerID == 1)
+                    {
+                        VictoryPanel.instance.p2HasWon = true;
+                    }
                 }
             }
             VictoryPanel.instance.Victory();

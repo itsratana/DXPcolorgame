@@ -3,8 +3,6 @@ using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 using Mirror;
-using System.Collections.Generic;
-using DG.Tweening;
 
 public class PlayerII : NetworkBehaviour
 {
@@ -56,7 +54,7 @@ public class PlayerII : NetworkBehaviour
     Vector3 playerMovement;
 
     [Header("Color")]
-    public List<Transform> duckColors = new List<Transform>();
+    //public List<Transform> duckColors = new List<Transform>();
     public PlayerColor currentColor = PlayerColor.red;
     public Color[] colorPlayer;
     public MeshRenderer playerMeshRenderer;
@@ -71,7 +69,7 @@ public class PlayerII : NetworkBehaviour
     {
         red, blue, green
     }
-    public void ChangeColor(int colorID)
+    /*public void ChangeColor(int colorID)
     {
         for (int i = 0; i < duckColors.Count; i++)
         {
@@ -82,7 +80,7 @@ public class PlayerII : NetworkBehaviour
             }
             duckColors[i].gameObject.SetActive(false);
         }
-    }
+    }*/
     public void ChangeColor(Color newColor)
     {
         GetComponent<Renderer>().material.color = newColor;
@@ -97,7 +95,15 @@ public class PlayerII : NetworkBehaviour
     public void SetUpID(int id)
     {
         playerID = id;
+        RpcSetUpID(id);
     }
+
+    [ClientRpc]
+    public void RpcSetUpID(int id)
+    {
+        playerID = id;
+    }
+
     private void Awake()
     {
         syncDirection = SyncDirection.ClientToServer;
@@ -110,15 +116,15 @@ public class PlayerII : NetworkBehaviour
 
         rb = GetComponent<Rigidbody>();
         lineRotation = GetComponent<Rotation>();
-
         switch (playerID)
-        {
+        {  
             case 0:
                 trajectoryLine.gameObject.layer = 11;
+                if (isLocalPlayer) refManager.identifierColor.color = new Color32(255, 0, 0, 255);
 
                 currentColor = PlayerColor.red;
                 playerMeshRenderer.material.color = Color.red;
-                duckColors[0].gameObject.SetActive(true);
+                //duckColors[0].gameObject.SetActive(true);
 
                 powerBarGO = refManager.powerBarGOP1;
                 PowerBarMask = refManager.PowerBarMaskP1;
@@ -126,10 +132,11 @@ public class PlayerII : NetworkBehaviour
                 break;
             case 1:
                 trajectoryLine.gameObject.layer = 12;
+                if (isLocalPlayer) refManager.identifierColor.color = new Color32(0, 0, 255, 255);
 
                 currentColor = PlayerColor.blue;
                 playerMeshRenderer.material.color = Color.blue;
-                duckColors[1].gameObject.SetActive(true);
+                //duckColors[1].gameObject.SetActive(true);
 
                 powerBarGO = refManager.powerBarGOP2;
                 PowerBarMask = refManager.PowerBarMaskP2;
@@ -157,10 +164,10 @@ public class PlayerII : NetworkBehaviour
             if (isServer)
             {
                 if (VictoryPanel.instance.p2HasWon || GameOverPanel.instance.isGameOverP2)
-                { 
+                {
                     StopAllCoroutines();
                     powerBarGO.SetActive(false);
-                    return; 
+                    return;
                 }
             }
         }
@@ -343,10 +350,18 @@ public class PlayerII : NetworkBehaviour
         if (collision.gameObject.layer == 8)
         {
             float curSpeed = lastVelocity.magnitude;
-            moveDirection = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
+
+            if (curSpeed > 0)
+            {
+                moveDirection = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
+            }
+            else
+            {
+                Vector3 incomingVector = collision.contacts[0].point - transform.position;
+                moveDirection = Vector3.Reflect(incomingVector.normalized, collision.contacts[0].normal);
+            }
 
             rb.velocity = moveDirection * Mathf.Max(curSpeed, 0);
-            //Bounce++;
         }
         if (collision.gameObject.layer == 3)
         {
@@ -368,10 +383,8 @@ public class PlayerII : NetworkBehaviour
     IEnumerator CheckVelocityAfk()
     {
         isCoroutineStart = true;
-        //yield return new WaitForSeconds(1f);
 
         float elapsedTime = 0f;
-        //countdownText.gameObject.SetActive(true);
 
         while (elapsedTime < afkCheck)
         {

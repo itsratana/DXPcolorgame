@@ -64,7 +64,7 @@ public class MyNetworkManager : NetworkManager
 
     public override void OnServerConnect(NetworkConnectionToClient conn)
     {
-        if(isGameStart)
+        if (isGameStart)
         {
             conn.Disconnect();
             return;
@@ -133,6 +133,10 @@ public class MyNetworkManager : NetworkManager
 
     public override void OnClientDisconnect()
     {
+        if (RefManager.Instance.identifierColor)
+        {
+            RefManager.Instance.identifierColor.color = new Color32(255, 255, 255, 0);
+        }
         if (RefManager.Instance.networkInputField)
         {
             RefManager.Instance.networkInputField.gameObject.SetActive(true);

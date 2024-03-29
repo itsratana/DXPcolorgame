@@ -1,7 +1,9 @@
+using Mirror;
 using UnityEngine;
 
 public class ServerStarter : MonoBehaviour
 {
+    MyNetworkManager myNetworkManager;
     [SerializeField] private MyNetworkHUD _myNetworkHUD = null;
     //[SerializeField] private Transform _titleGame = null;
     [SerializeField] private Transform _qrCode = null;
@@ -9,7 +11,15 @@ public class ServerStarter : MonoBehaviour
 
     private void Start()
     {
+        myNetworkManager = (MyNetworkManager)NetworkManager.singleton;
         StartServer();
+    }
+    private void Update()
+    {
+        if (myNetworkManager.isGameStart)
+        {
+            _qrCode.gameObject.SetActive(false);
+        }
     }
 
     public void StartServer()
@@ -25,7 +35,7 @@ public class ServerStarter : MonoBehaviour
         }
         else if (Application.platform == RuntimePlatform.WindowsPlayer)
         {
-            //_qrCode.gameObject.SetActive(true);            
+            _qrCode.gameObject.SetActive(true);            
             _myNetworkHUD.OnServerOnly();
             //_myNetworkHUD.TestOnStatClient();
         }

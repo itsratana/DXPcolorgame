@@ -5,7 +5,6 @@ using UnityEngine;
 public class Bounce : MonoBehaviour
 {
 	public float force = 10f; //Force 10000f
-	public float stunTime = 0.5f;
 	private Vector3 hitDir;
 
 	void OnCollisionEnter(Collision collision)
@@ -16,18 +15,18 @@ public class Bounce : MonoBehaviour
 			if (collision.gameObject.layer == 3)
 			{
 				hitDir = contact.normal;
-				collision.gameObject.GetComponent<CharacterControls>().HitPlayer(-hitDir * force, stunTime);
+				collision.gameObject.GetComponent<Rigidbody>().AddForce(-hitDir * force, ForceMode.Impulse);
 				return;
 			}
 		}
-		/*if (collision.relativeVelocity.magnitude > 2)
+		if (collision.relativeVelocity.magnitude > 2)
 		{
-			if (collision.gameObject.tag == "Player")
+			if (collision.gameObject.layer == 3)
 			{
-				//Debug.Log("Hit");
-				collision.gameObject.GetComponent<CharacterControls>().HitPlayer(-hitDir*force, stunTime);
-			}
+                //Debug.Log("Hit");
+                collision.gameObject.GetComponent<Rigidbody>().AddForce(-hitDir * force, ForceMode.Impulse);
+            }
 			//audioSource.Play();
-		}*/
+		}
 	}
 }

@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 8994021905377605058}
   - component: {fileID: 8994021905377605059}
   - component: {fileID: 8994021905377605056}
-  m_Layer: 8
+  - component: {fileID: 9084879604361799735}
+  m_Layer: 0
   m_Name: MovableObs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124,6 +125,19 @@ MonoBehaviour:
   endPos: {fileID: 6523637728532497373}
   moveDuration: 2
   startPos: {x: -1.67, y: 1.52, z: -12.61}
+--- !u!114 &9084879604361799735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8994021905377605057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdffcc51f538bef4c8abd3b5bbb6ff17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  force: 5
 --- !u!1 &9176226820017213170
 GameObject:
   m_ObjectHideFlags: 0
@@ -133,7 +147,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6523637728532497373}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: EndPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}

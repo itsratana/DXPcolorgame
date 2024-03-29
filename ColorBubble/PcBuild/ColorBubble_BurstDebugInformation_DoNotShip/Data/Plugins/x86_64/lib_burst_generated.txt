@@ -43,6 +43,7 @@ Library: D:\UnityGit\DXPcolorgame\ColorBubble\Temp\BurstOutput\Data\Plugins\x86_
 --assembly-defines=Unity.VisualScripting.Antlr3.Runtime;
 --assembly-defines=Unity.Burst.Unsafe;
 --assembly-defines=Newtonsoft.Json;
+--assembly-defines=zxing.unity;
 --assembly-defines=System.Runtime;
 --assembly-defines=netstandard;
 --assembly-defines=Mono.Security;
@@ -120,6 +121,7 @@ Library: D:\UnityGit\DXPcolorgame\ColorBubble\Temp\BurstOutput\Data\Plugins\x86_
 --assembly-defines=Unity.VisualScripting.Antlr3.Runtime;
 --assembly-defines=Unity.Burst.Unsafe;
 --assembly-defines=Newtonsoft.Json;
+--assembly-defines=zxing.unity;
 --assembly-defines=System.Runtime;
 --assembly-defines=netstandard;
 --assembly-defines=Mono.Security;
@@ -195,6 +197,7 @@ Library: D:\UnityGit\DXPcolorgame\ColorBubble\Temp\BurstOutput\Data\Plugins\x86_
 --assembly-defines=Unity.VisualScripting.Antlr3.Runtime;
 --assembly-defines=Unity.Burst.Unsafe;
 --assembly-defines=Newtonsoft.Json;
+--assembly-defines=zxing.unity;
 --assembly-defines=System.Runtime;
 --assembly-defines=netstandard;
 --assembly-defines=Mono.Security;
@@ -274,6 +277,7 @@ Library: D:\UnityGit\DXPcolorgame\ColorBubble\Temp\BurstOutput\Data\Plugins\x86_
 --assembly-defines=Unity.VisualScripting.Antlr3.Runtime;
 --assembly-defines=Unity.Burst.Unsafe;
 --assembly-defines=Newtonsoft.Json;
+--assembly-defines=zxing.unity;
 --assembly-defines=System.Runtime;
 --assembly-defines=netstandard;
 --assembly-defines=Mono.Security;

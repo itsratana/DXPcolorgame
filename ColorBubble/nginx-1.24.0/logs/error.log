@@ -30,3 +30,12 @@
 2024/03/28 16:42:36 [error] 17020#11644: *59 CreateFile() "D:\nginx-1.24.0\nginx-1.24.0/html/build.wasm" failed (2: The system cannot find the file specified), client: 192.168.88.17, server: _, request: "GET /build.wasm HTTP/1.1", host: "192.168.88.61", referrer: "https://192.168.88.61/"
 2024/03/28 17:36:21 [emerg] 10576#15308: cannot load certificate "D:/nginx-1.24.0/nginx-1.24.0/cert.pem": BIO_new_file() failed (SSL: error:02001003:system library:fopen:No such process:fopen('D:/nginx-1.24.0/nginx-1.24.0/cert.pem','r') error:2006D080:BIO routines:BIO_new_file:no such file)
 2024/03/28 17:37:09 [emerg] 9344#13156: cannot load certificate "D:/nginx-1.24.0/nginx-1.24.0/cert.pem": BIO_new_file() failed (SSL: error:02001003:system library:fopen:No such process:fopen('D:/nginx-1.24.0/nginx-1.24.0/cert.pem','r') error:2006D080:BIO routines:BIO_new_file:no such file)
+2024/03/29 09:21:04 [notice] 3120#13472: signal process started
+2024/03/29 09:21:04 [error] 3120#13472: OpenEvent("Global\ngx_reload_8056") failed (2: The system cannot find the file specified)
+2024/03/29 09:23:38 [notice] 1908#6180: signal process started
+2024/03/29 09:23:38 [error] 1908#6180: OpenEvent("Global\ngx_stop_8056") failed (2: The system cannot find the file specified)
+2024/03/29 09:24:13 [notice] 5136#4356: signal process started
+2024/03/29 09:24:20 [notice] 8360#14212: signal process started
+2024/03/29 09:24:30 [notice] 6796#3792: signal process started
+2024/03/29 09:24:30 [error] 6796#3792: CreateFile() "D:\UnityGit\DXPcolorgame\ColorBubble\nginx-1.24.0/logs/nginx.pid" failed (2: The system cannot find the file specified)
+2024/03/29 09:25:22 [notice] 2604#4052: signal process started

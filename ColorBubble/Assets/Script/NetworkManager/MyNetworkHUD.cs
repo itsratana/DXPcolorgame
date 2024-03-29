@@ -63,10 +63,13 @@ public class MyNetworkHUD : MonoBehaviour
         serverStarter.StartServer();
     }
 
-    public void UpdateInputField()
+    public void UpdateIPToStartClient()
+    {
+        manager.networkAddress = networkInfo.GetIPAddressFromUrl(Application.absoluteURL);       
+    }
+    public void UpdateFromInputField()
     {
         manager.networkAddress = inputField.text;
-        
     }
 
     /*public void OnStartClientWhenNotConnectToServer()
@@ -119,7 +122,7 @@ public class MyNetworkHUD : MonoBehaviour
     public void NavigateToLoginPage()
     {
         string ipAddress = networkInfo.GetIPAddressFromUrl(Application.absoluteURL);
-        Application.OpenURL($"https://{ipAddress}:3500/login?game_id=65bafc525047e3faffb9b3bd");
+        Application.OpenURL($"https://{ipAddress}/");
         //Application.OpenURL($"https://192.168.11.117:3500/login?game_id=65bafc525047e3faffb9b3bd");
     }
 
@@ -128,8 +131,13 @@ public class MyNetworkHUD : MonoBehaviour
         //manager.networkAddress = networkInfo.GetLocalIPAddressFromUrl(Application.absoluteURL);
         //manager.networkAddress = "192.168.88.61";
         //manager.networkAddress = "localhost";
-        UpdateInputField();
+        UpdateFromInputField();
         manager.StartClient();
 
+    }
+    public void StartCLientLocalIP()
+    {
+        UpdateIPToStartClient();
+        manager.StartClient();
     }
 }
