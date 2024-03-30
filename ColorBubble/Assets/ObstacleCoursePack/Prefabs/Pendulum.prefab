@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 5263193849274771172}
   - component: {fileID: 5263193849274771171}
   - component: {fileID: 5263193849274771169}
-  - component: {fileID: 7566604364989065026}
+  - component: {fileID: 1726967370373137664}
   m_Layer: 10
   m_Name: Ball
   m_TagString: Untagged
@@ -181,8 +181,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   force: 5
---- !u!65 &7566604364989065026
-BoxCollider:
+--- !u!135 &1726967370373137664
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -200,8 +200,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.3499416, y: 1.0130899, z: 1.037803}
-  m_Center: {x: -0.00000007947286, y: -0.0014834404, z: -0.0023552775}
+  m_Radius: 0.5
+  m_Center: {x: 0, y: -0.000000059604645, z: 0}
 --- !u!1 &5263193850122822931
 GameObject:
   m_ObjectHideFlags: 0
