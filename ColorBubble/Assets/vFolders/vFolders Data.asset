@@ -150,8 +150,8 @@ MonoBehaviour:
       autoIconDirty: 0
     - guid: 6ea315d0fd7389c41b19996891e99ae3
       iColor: 0
-      autoIcon: SceneAsset Icon
-      customIcon: 
+      autoIcon: 
+      customIcon: SceneAsset Icon
       autoIconDirty: 0
     - guid: 4a4012af938b83c4ba44cd63afcd9e50
       iColor: 0
@@ -392,7 +392,7 @@ MonoBehaviour:
       iColor: 0
       autoIcon: cs Script Icon
       customIcon: 
-      autoIconDirty: 0
+      autoIconDirty: 1
     - guid: 075babad318c71d4b88be3501db81c9b
       iColor: 0
       autoIcon: 

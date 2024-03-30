@@ -94,9 +94,9 @@ GameObject:
   - component: {fileID: 5263193849274771173}
   - component: {fileID: 5263193849274771172}
   - component: {fileID: 5263193849274771171}
-  - component: {fileID: 5263193849274771170}
   - component: {fileID: 5263193849274771169}
-  m_Layer: 0
+  - component: {fileID: 7566604364989065026}
+  m_Layer: 10
   m_Name: Ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -168,27 +168,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &5263193849274771170
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5263193849274771168}
-  m_Material: {fileID: 13400000, guid: 4f9b3b62200b5134bb2c30750747a446, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &5263193849274771169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,6 +181,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   force: 5
+--- !u!65 &7566604364989065026
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5263193849274771168}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.3499416, y: 1.0130899, z: 1.037803}
+  m_Center: {x: -0.00000007947286, y: -0.0014834404, z: -0.0023552775}
 --- !u!1 &5263193850122822931
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,7 +228,7 @@ Transform:
   m_GameObject: {fileID: 5263193850122822931}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.06, y: 9.21, z: 18.49}
+  m_LocalPosition: {x: 0, y: 9.21, z: 18.49}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -249,5 +249,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
-  limit: 75
+  limit: 22
   randomStart: 1

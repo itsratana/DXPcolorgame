@@ -2604,11 +2604,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed6f69e77b8cf64787d5f035a735e44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myNetworkManager: {fileID: 0}
-  gameOver: {fileID: 0}
+  myNetworkManager: {fileID: 442849975}
   timer: {fileID: 2122925984}
-  gameTime: 90
-  timeLeft: 0
+  gameTime: 10
   timeSpent: 0
 --- !u!1 &408445177
 GameObject:

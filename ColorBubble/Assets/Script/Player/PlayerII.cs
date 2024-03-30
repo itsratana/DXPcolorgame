@@ -61,7 +61,7 @@ public class PlayerII : NetworkBehaviour
 
     [Header("Countdown")]
     private float checkInterval = 0.1f;
-    private float afkCheck = 11f;
+    private float afkCheck = 10f;
     private Coroutine countDownCoroutine;
     private bool isCoroutineStart = false;
 
@@ -112,12 +112,15 @@ public class PlayerII : NetworkBehaviour
 
     void Start()
     {
+        refManager.countdownTimeP1.gameObject.SetActive(false);
+        refManager.countdownTimeP2.gameObject.SetActive(false);
+
         Input.gyro.enabled = true;
 
         rb = GetComponent<Rigidbody>();
         lineRotation = GetComponent<Rotation>();
         switch (playerID)
-        {  
+        {
             case 0:
                 trajectoryLine.gameObject.layer = 11;
                 if (isLocalPlayer) refManager.identifierColor.color = new Color32(255, 0, 0, 255);
@@ -350,17 +353,7 @@ public class PlayerII : NetworkBehaviour
         if (collision.gameObject.layer == 8)
         {
             float curSpeed = lastVelocity.magnitude;
-
-            if (curSpeed > 0)
-            {
-                moveDirection = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
-            }
-            else
-            {
-                Vector3 incomingVector = collision.contacts[0].point - transform.position;
-                moveDirection = Vector3.Reflect(incomingVector.normalized, collision.contacts[0].normal);
-            }
-
+            moveDirection = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
             rb.velocity = moveDirection * Mathf.Max(curSpeed, 0);
         }
         if (collision.gameObject.layer == 3)
@@ -386,6 +379,8 @@ public class PlayerII : NetworkBehaviour
 
         float elapsedTime = 0f;
 
+        yield return new WaitForSeconds(1);
+
         while (elapsedTime < afkCheck)
         {
             yield return new WaitForSeconds(checkInterval);
@@ -393,7 +388,7 @@ public class PlayerII : NetworkBehaviour
             if (rb.velocity.magnitude < 0.01f)
             {
                 elapsedTime += checkInterval;
-                if (elapsedTime >= 1)
+                if (elapsedTime >= 0)
                 {
                     if (playerID == 0)
                     {
@@ -408,7 +403,7 @@ public class PlayerII : NetworkBehaviour
                 {
                     if (playerID == 0)
                     {
-                        refManager.countdownTimeP2.gameObject.SetActive(false);
+                        refManager.countdownTimeP1.gameObject.SetActive(false);
                     }
                     else if (playerID == 1)
                     {

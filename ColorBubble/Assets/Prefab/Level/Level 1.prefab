@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6037902205464695937}
   - component: {fileID: 8770272221191732069}
   - component: {fileID: 4888035032080284753}
+  - component: {fileID: 8439113993432492691}
   m_Layer: 8
   m_Name: block
   m_TagString: Untagged
@@ -105,6 +106,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.9999, y: 0.3640846, z: 0.9999}
   m_Center: {x: 0, y: 0.1820423, z: 0}
+--- !u!114 &8439113993432492691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 207505925695077195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdffcc51f538bef4c8abd3b5bbb6ff17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  force: 2
 --- !u!1 &893037610582340529
 GameObject:
   m_ObjectHideFlags: 0
@@ -524,8 +538,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.9999, y: 0.3640846, z: 0.9999}
-  m_Center: {x: 0, y: 0.1820423, z: 0}
+  m_Size: {x: 0.9999, y: 0.32879412, z: 0.9999}
+  m_Center: {x: 1.6528994e-14, y: 0.17939574, z: 0}
 --- !u!1 &4484415111710107909
 GameObject:
   m_ObjectHideFlags: 0
@@ -811,6 +825,7 @@ GameObject:
   - component: {fileID: 2661468653248668924}
   - component: {fileID: 8520025586157589927}
   - component: {fileID: 8350929309030441458}
+  - component: {fileID: 4422278829108512299}
   m_Layer: 8
   m_Name: block (1)
   m_TagString: Untagged
@@ -904,6 +919,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.9999, y: 0.36408463, z: 0.9999001}
   m_Center: {x: 0, y: 0.18204232, z: 0}
+--- !u!114 &4422278829108512299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8327799899920454694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdffcc51f538bef4c8abd3b5bbb6ff17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  force: 2
 --- !u!1 &8983363414502463912
 GameObject:
   m_ObjectHideFlags: 0
@@ -1009,8 +1037,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.88048404, y: 38.109596, z: 1}
+  m_Center: {x: 0.059757974, y: 18.554798, z: 0}
 --- !u!54 &2765256827158616529
 Rigidbody:
   m_ObjectHideFlags: 0

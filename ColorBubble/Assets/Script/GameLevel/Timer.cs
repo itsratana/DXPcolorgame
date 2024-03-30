@@ -8,11 +8,8 @@ public class Timer : MonoBehaviour
 
     public MyNetworkManager myNetworkManager;
 
-    [SerializeField] private GameOverPanel gameOver;
-
     public TextMeshProUGUI timer;
     public float gameTime;
-    public float timeLeft;
     public float timeSpent;
     private void Awake()
     {
@@ -31,20 +28,24 @@ public class Timer : MonoBehaviour
     {
         if (gameTime > 0f)
         {
-            if (gameTime <= 0)
-            {
-                gameTime = 0f;
-            }
             timeSpent += Time.deltaTime;
             gameTime -= Time.deltaTime;
 
             int minute = Mathf.FloorToInt(gameTime / 60);
             int second = Mathf.FloorToInt(gameTime % 60);
             int millisecond = Mathf.FloorToInt((gameTime * 100) % 100);
+            
+            if (gameTime <= 0)
+            {
+                minute = 0;
+                second = 0;
+                millisecond = 0;
+            }
             timer.text = string.Format("{0:00}:{1:00}:{2:00}", minute, second, millisecond);
         }
         else
         {
+
             if (myNetworkManager.players[0] != null)
             {
                 if (!VictoryPanel.instance.p1HasWon)
