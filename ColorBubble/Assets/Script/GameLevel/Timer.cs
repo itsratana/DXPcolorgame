@@ -13,11 +13,12 @@ public class Timer : MonoBehaviour
     public float timeSpent;
     private void Awake()
     {
-        myNetworkManager = (MyNetworkManager)NetworkManager.singleton;
+        
         instance = this;
     }
     private void Start()
     {
+        myNetworkManager = (MyNetworkManager)NetworkManager.singleton;
         timeSpent = 0f;
     }
     void Update()

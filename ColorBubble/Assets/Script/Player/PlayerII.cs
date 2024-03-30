@@ -112,8 +112,11 @@ public class PlayerII : NetworkBehaviour
 
     void Start()
     {
-        refManager.countdownTimeP1.gameObject.SetActive(false);
-        refManager.countdownTimeP2.gameObject.SetActive(false);
+        if (isServer)
+        {
+            refManager.countdownTimeP1.gameObject.SetActive(false);
+            refManager.countdownTimeP2.gameObject.SetActive(false);
+        }
 
         Input.gyro.enabled = true;
 

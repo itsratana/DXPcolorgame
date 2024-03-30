@@ -2606,7 +2606,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myNetworkManager: {fileID: 442849975}
   timer: {fileID: 2122925984}
-  gameTime: 10
+  gameTime: 90
   timeSpent: 0
 --- !u!1 &408445177
 GameObject:
